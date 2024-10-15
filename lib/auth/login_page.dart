@@ -106,24 +106,24 @@ class _LogInState extends State<LogIn> {
               ),
             ),
 
-
             Center(
               child: Form(
                 key: loginFormKey,
                 child: Column(
-                  
+                  mainAxisAlignment: MainAxisAlignment.center,
+
                   children: [
                     
                     const SizedBox(height: 80),
                     
                     Image.asset('assets/logo.png', height: 285), //300
                       
-                    const SizedBox(height: 55),
+                    const SizedBox(height: 35),
                     
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 36,),
                       child: Container(
-                        padding: const EdgeInsets.only(top: 35, bottom: 29),
+                        padding: const EdgeInsets.symmetric(vertical: 25),
                         margin: const EdgeInsets.only(bottom: 40),
                         decoration: BoxDecoration(
                           color: Colors.white,
@@ -148,6 +148,7 @@ class _LogInState extends State<LogIn> {
 
                         ),
                         child: Column(
+                          // mainAxisAlignment: MainAxisAlignment.center,
                           children: [
 
                             MyTextFormField(
@@ -257,8 +258,6 @@ class _LogInState extends State<LogIn> {
                         ),
                       ),
                     ),
-
-
                   ],
                 ),
               ),

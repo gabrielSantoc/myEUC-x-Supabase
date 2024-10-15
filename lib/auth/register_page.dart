@@ -304,7 +304,7 @@ class _RegisterNewState extends State<RegisterNew> {
                 ),
               ),
           
-              const SizedBox(height: 33),
+              const SizedBox(height: 20),
               
           
               Padding(
@@ -429,7 +429,7 @@ class _RegisterNewState extends State<RegisterNew> {
                         }
                       ),
                   
-                      const SizedBox(height: 40),
+                      const SizedBox(height: 20),
                 
                       Form(
                         child: Column(
