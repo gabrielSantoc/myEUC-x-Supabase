@@ -1,0 +1,271 @@
+import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:myeuc_x_supabase/auth/forgot_password.dart';
+import 'package:myeuc_x_supabase/auth/register_page.dart';
+import 'package:myeuc_x_supabase/components/nav_bar.dart';
+import 'package:myeuc_x_supabase/main.dart';
+import 'package:myeuc_x_supabase/shared/alert.dart';
+import 'package:myeuc_x_supabase/shared/buttons.dart';
+import 'package:myeuc_x_supabase/shared/constants.dart';
+import 'package:myeuc_x_supabase/shared/textFields.dart';
+import 'package:myeuc_x_supabase/shared/validators.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+
+
+class LogIn extends StatefulWidget {
+  const LogIn({super.key});
+  
+  @override
+  State<LogIn> createState() => _LogInState();
+  
+}
+
+class _LogInState extends State<LogIn> {
+  final loginFormKey = GlobalKey<FormState>();
+
+  bool obscureTextFlag = true;
+  final userEmailController = TextEditingController();
+  final userPasswordController = TextEditingController();
+  @override
+  void dispose() {
+    userEmailController.dispose();
+    userPasswordController.dispose();
+    super.dispose();
+  }
+
+  void login() async {
+
+
+    if(loginFormKey.currentState!.validate()) {
+
+      try {
+
+        LoadingDialog.showLoading(context);
+        await Future.delayed(const Duration(seconds: 3));
+        
+        final AuthResponse res = await supabase.auth.signInWithPassword(
+          email: userEmailController.text.toString(),
+          password: userPasswordController.text.toString(),
+        );
+
+        final User? user = res.user; // get authenticated user data object 
+        final String userId = user!.id;  // get user id
+
+        print("USER UIID::: $userId"); // G
+
+        LoadingDialog.hideLoading(context);
+        
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const NavBar())
+        );
+
+
+      } on AuthException catch(e) {
+        
+        Alert.of(context).showError(e.message);
+        print("ERROR ::: ${e.code}");
+        Navigator.pop(context);
+
+      }
+    }
+  } 
+
+  @override
+  Widget build(BuildContext context) {
+    
+    return Scaffold(
+      backgroundColor: const Color(0xFF9e0b0f),
+
+      body: SingleChildScrollView(
+        
+        child: Stack(
+          
+          
+          children: [
+
+            Positioned(
+              child: Container(
+                height:  MediaQuery.of(context).size.height * 0.79,
+                decoration: const BoxDecoration(
+                  color:Color(0xFFe7e7e7),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(23),
+                    bottomRight: Radius.circular(23),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      offset: const Offset(0, 1),
+                      blurRadius: 15,
+                      spreadRadius: 2.0,
+                      color: Color.fromARGB(124, 0, 0, 0)
+                    )
+                  ]
+                ),
+              ),
+            ),
+
+
+            Center(
+              child: Form(
+                key: loginFormKey,
+                child: Column(
+                  
+                  children: [
+                    
+                    const SizedBox(height: 80),
+                    
+                    Image.asset('assets/logo.png', height: 285), //300
+                      
+                    const SizedBox(height: 55),
+                    
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 36,),
+                      child: Container(
+                        padding: const EdgeInsets.only(top: 35, bottom: 29),
+                        margin: const EdgeInsets.only(bottom: 40),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(24),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Color.fromRGBO(0, 0, 0, 0.16),
+                              blurRadius: 6,
+                              spreadRadius: 0,
+                              offset: Offset(
+                                0,
+                                3,
+                              ),
+                            ),
+                            BoxShadow(
+                              color: Color.fromRGBO(0, 0, 0, 0.23),
+                              blurRadius: 6,
+                              spreadRadius: 0,
+                              offset: Offset(0, 3),
+                            ),
+                          ]
+
+                        ),
+                        child: Column(
+                          children: [
+
+                            MyTextFormField(
+                              controller: userEmailController,
+                              hintText: "Email",
+                              obscureText: false,
+                              validator: Validator.of(context).validateEmail
+                            ),
+                      
+                            const SizedBox(height: 15),
+                      
+                            MyTextFormFieldPasword(
+                                controller: userPasswordController,
+                                hintText: 'Password',
+                                obscureText: obscureTextFlag,
+                                suffixIcon: GestureDetector(
+                
+                                  onTap: () {
+                                    setState(() {
+                                      obscureTextFlag = !obscureTextFlag;
+                                      print("FLAGGGGGGG ${obscureTextFlag}");
+                                    });
+                                  },
+                                  child: Icon( obscureTextFlag ?Icons.visibility_off :Icons.visibility )
+                                ),
+                                
+                                validator: (value)=> Validator.of(context).validateTextField(value, "Password"),
+                            ),
+                        
+                            const SizedBox(height: 20),
+                        
+                            const Padding(
+                              padding: EdgeInsets.symmetric( horizontal: 25.0 ),
+                              child: Text(
+                                'For Students, your initial password is your birthdate in this format YYYY-MM-DD.',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black
+                                ),
+                                  
+                              ),
+                            ),
+                        
+                            const SizedBox(height: 15),
+                        
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context, 
+                                  MaterialPageRoute(builder: (context) => const ForgotPasswordPage())
+                                );
+                              },
+                              child: const Text(
+                                'Forgot Password ?',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF9e0b0f)
+                                ),
+                                
+                              ),
+                            ),
+                        
+                            const SizedBox(height: 20),
+                        
+                            Form(
+                              child: Column(
+                                children: [
+                                  MyButton(
+                                    onTap: login,
+                                    buttonName: 'Login',
+                                  ),
+                                ],
+                              ),
+                            ),
+                        
+                            const SizedBox(height: 20),
+                              
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                        
+                                const Text("Don't have an account? "),
+                        
+                                const SizedBox(width: 20),
+                        
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => const RegisterNew()) //signup
+                                    );
+                                  },
+                                  child: const Text(
+                                    "Sign Up",
+                                    style: TextStyle(
+                                      color: Color(0xFF9e0b0f),
+                                      fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+
+
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
