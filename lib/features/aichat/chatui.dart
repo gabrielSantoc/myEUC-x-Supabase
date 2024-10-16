@@ -137,7 +137,7 @@ void _sendMessage() async {
                 'Delete Conversation',
                 'Are you sure you want to delete this conversation? You won\'t be able to retrieve it.',
                 _resetConversation),
-            icon: Icon(Icons.delete),
+            icon: const Icon(Icons.delete),
           ),
         ],
       ),
@@ -152,8 +152,8 @@ void _sendMessage() async {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   LoadingAnimationWidget.fourRotatingDots(
-                      color: Color.fromARGB(255, 170, 0, 0), size: 60),
-                  SizedBox(height: 20),
+                      color: const Color.fromARGB(255, 170, 0, 0), size: 60),
+                  const SizedBox(height: 20),
                   Text('Initializing chat...',
                       style: TextStyle(fontSize: 16, color: Colors.grey[600])),
                 ],
@@ -259,7 +259,7 @@ class ChatBubble extends StatelessWidget {
             ),
             child: isLoading
                 ? LoadingAnimationWidget.waveDots(
-                    color: Color.fromARGB(97, 0, 0, 0),
+                    color: const Color.fromARGB(97, 0, 0, 0),
                     size: 25,
                   )
                 : MarkdownBody(
@@ -268,7 +268,7 @@ class ChatBubble extends StatelessWidget {
                       p: TextStyle(
                         color: isUserMessage ? Colors.white : Colors.black,
                       ),
-                      tableBody: TextStyle(fontSize: 10),
+                      tableBody: const TextStyle(fontSize: 10),
                     ),
                   ),
           ),
@@ -286,9 +286,9 @@ Widget buildScrollToBottomButton(Function scrollDown) {
       elevation: 0,
       backgroundColor: Colors.grey[300],
       onPressed: () => scrollDown(Duration.zero),
+      shape: const CircleBorder(),
       child: const Icon(Icons.arrow_downward,
           color: Color.fromARGB(255, 114, 0, 0)),
-      shape: const CircleBorder(),
     ),
   );
 }
@@ -296,7 +296,7 @@ Widget buildScrollToBottomButton(Function scrollDown) {
 Widget buildWelcomeImage(double imageSize, ScrollController scrollController) {
   return Column(
     children: [
-      SizedBox(height: 100),
+      const SizedBox(height: 100),
       AnimatedContainer(
         duration: const Duration(milliseconds: 500),
         curve: Curves.easeInOut,
@@ -304,7 +304,7 @@ Widget buildWelcomeImage(double imageSize, ScrollController scrollController) {
         child: Image.asset("assets/icon/manuel2.png",
             width: imageSize, height: imageSize),
       ),
-      SizedBox(height: 50),
+      const SizedBox(height: 50),
     ],
   );
 }
@@ -354,20 +354,20 @@ void showErrorDialog(BuildContext context, String title, String content,
         content: Text(content),
         actions: <Widget>[
           TextButton(
-            child: Text('OK'),
             style: TextButton.styleFrom(
                 foregroundColor: const Color.fromARGB(255, 155, 10, 0)),
             onPressed: () => Navigator.of(context).pop(),
+            child: Text('OK'),
           ),
           if (retryAction != null)
             TextButton(
-              child: Text('Retry'),
               style: TextButton.styleFrom(
                   foregroundColor: const Color.fromARGB(255, 155, 10, 0)),
               onPressed: () {
                 Navigator.of(context).pop();
                 retryAction();
               },
+              child: Text('Retry'),
             ),
         ],
       );
@@ -385,19 +385,19 @@ void showConfirmDialog(BuildContext context, String title, String content,
         content: Text(content),
         actions: <Widget>[
           TextButton(
-            child: Text('Cancel'),
             style: TextButton.styleFrom(
                 foregroundColor: const Color.fromARGB(255, 155, 10, 0)),
             onPressed: () => Navigator.of(context).pop(),
+            child: Text('Cancel'),
           ),
           TextButton(
-            child: Text('Delete'),
             style: TextButton.styleFrom(
                 foregroundColor: const Color.fromARGB(255, 155, 10, 0)),
             onPressed: () {
               onConfirm();
               Navigator.of(context).pop();
             },
+            child: Text('Delete'),
           ),
         ],
       );

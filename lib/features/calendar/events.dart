@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:myeuc_x_supabase/box/boxes.dart';
@@ -35,9 +32,9 @@ class MyEucEventsState extends State<MyEucEvents> {
   @override
   void initState() {
     // if this is the first time ever opening the app, then fetch the events and store them locally
-    if(boxEvents.get('EventBox') == null && boxHeader.get('HeaderBox') == null) {
-      storeEventsLocally();
-    }
+    // if(boxEvents.get('EventBox') == null && boxHeader.get('HeaderBox') == null) {
+    //   storeEventsLocally();
+    // }
 
     //TODO - check if api is modified, if not dont run the store local events fucntion
     checkIfAPIhasBeenModified();
@@ -55,7 +52,8 @@ class MyEucEventsState extends State<MyEucEvents> {
       final listOfEventsQuery = await 
         Supabase.instance.client
         .from('tbl_calendar')
-        .select();
+        .select()
+        .order('date', ascending: true);
 
       // print('SCHOOL CALENDAR EVENTS ::::: $listOfEvents');
 
@@ -68,10 +66,10 @@ class MyEucEventsState extends State<MyEucEvents> {
         .order('last_modified', ascending: false)
         .limit(1);
 
-      print("LAST MODIFIED RESPONSE :::: ${lastModifiedQuery}");
+      print("LAST MODIFIED RESPONSE :::: $lastModifiedQuery");
       String lastModified = lastModifiedQuery[0]['last_modified'].toString();
       
-      print("LAST MODIFIED :::: ${lastModified}");
+      print("LAST MODIFIED :::: $lastModified");
 
       boxHeader.put('last-modified', lastModified);
 
@@ -91,9 +89,9 @@ class MyEucEventsState extends State<MyEucEvents> {
 
       filterEventsFromHive();
 
-    } on SocketException {
+    } on Exception catch(e) {
 
-      print("NO INTERNET CONNECTION");
+      print("EXCEPTION ::::: $e");
       filterEventsFromHive();
 
     }
@@ -135,7 +133,7 @@ class MyEucEventsState extends State<MyEucEvents> {
         .order('last_modified', ascending: false)
         .limit(1);
 
-      print("LAST MODIFIED RESPONSE :::: ${lastModifiedQueryNew}");
+      print("LAST MODIFIED RESPONSE :::: $lastModifiedQueryNew");
       String lastModifiedNew = lastModifiedQueryNew[0]['last_modified'].toString();
 
 
@@ -149,10 +147,10 @@ class MyEucEventsState extends State<MyEucEvents> {
       }
       return Alert.of(context).showSuccess('Calendar is still up to date". 🥰🥰🥰');
 
-    } on SocketException {
+    } on Exception catch(e) {
 
-      print("NO INTERNET CONNECTION");
-      filterEventsFromHive(); 
+      print("EXCEPTION ::::: $e");
+      filterEventsFromHive();
 
     }
     filterEventsFromHive();

@@ -48,7 +48,7 @@ class _NavBar extends State<NavBar> {
               if (index == 1) {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ChatUI()),
+                  MaterialPageRoute(builder: (context) => const ChatUI()),
                 );
               } else {
                 setState(() => this.index = index);
