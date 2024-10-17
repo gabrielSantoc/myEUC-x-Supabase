@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:myeuc_x_supabase/auth/auth.dart';
+import 'package:myeuc_x_supabase/utils/markdown_utils.dart';
 import 'package:myeuc_x_supabase/main.dart';
+import 'package:myeuc_x_supabase/shared/alert.dart';
 
 
 
 class MyDrawer extends StatelessWidget {
-  const MyDrawer({super.key});
+  final VoidCallback? onUpdateComplete;
+
+  const MyDrawer({Key? key,  this.onUpdateComplete}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +35,13 @@ class MyDrawer extends StatelessWidget {
           child: ListTile(
             leading: Icon(Icons.download),
             title: Text('Check for Updates'),
-            onTap: () => {null
+            onTap: () async{
+              
+              await MarkdownUtils.updateMarkdownFile();
+              Alert.of(context).showSuccess('Handbook is already updated. 🥰🥰🥰');
+              Navigator.pop(context);
+              onUpdateComplete!();
+
             },
           ),
         ),

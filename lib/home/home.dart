@@ -1,10 +1,12 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:myeuc_x_supabase/components/my_drawer.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:myeuc_x_supabase/features/handbook/contentpage.dart';
+import 'package:myeuc_x_supabase/utils/markdown_utils.dart';
+
 import 'package:myeuc_x_supabase/shared/constants.dart';
 import 'package:page_transition/page_transition.dart';
+
 
 DateTime date = DateTime.now();
 int timeCheck = date.hour;
@@ -41,43 +43,16 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> loadMarkdownData() async {
-    final String data =
-        await rootBundle.loadString('assets/markdown/student.md');
+    await MarkdownUtils.initializeMarkdownFile();
+    final String data = await MarkdownUtils.getMarkdownContent();
     setState(() {
       _markdownData = data;
-      _sections = parseMarkdown(data);
+      _sections = MarkdownUtils.parseMarkdown(data);
       _filteredSections = _sections;
     });
   }
 
-  Map<String, String> parseMarkdown(String markdown) {
-    final lines = markdown.split('\n');
-    final Map<String, String> sections = {};
-    String currentHeading = '';
-    List<String> currentContent = [];
-
-    for (final line in lines) {
-      if (line.startsWith('#')) {
-        // If theres an existing heading, then add that and its content to the sections, then delete the contents to start over again for the next section
-        if (currentHeading.isNotEmpty) {
-          sections[currentHeading] = currentContent.join('\n').trim();
-          currentContent.clear();
-        }
-        // Update the current heading (remove '#' and trim)
-        currentHeading = line.replaceAll(RegExp(r'^#+\s*'), '').trim();
-      } else {
-        // Add non-heading lines to the current content
-        currentContent.add(line);
-      }
-    }
-
-    // Add the last section since the saving to sections only triggers if theres heading, so if theres no heading in the end, it cant be saved
-    if (currentHeading.isNotEmpty) {
-      sections[currentHeading] = currentContent.join('\n').trim();
-    }
-
-    return sections;
-  }
+  
 
   void runFilter(String enteredKeyword) {
     Map<String, String> results = {};
@@ -110,15 +85,13 @@ class _HomeState extends State<Home> {
         foregroundColor: Colors.white,
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 14.0),
-            child: IconButton(
-              onPressed: () => {},
-              icon: Image.asset('assets/sample-icon.png')
-            )
-          )
+              padding: EdgeInsets.only(right: 14.0),
+              child: IconButton(
+                  onPressed: () => {},
+                  icon: Image.asset('assets/sample-icon.png')))
         ],
       ),
-      drawer: const MyDrawer(),
+      drawer:  MyDrawer(onUpdateComplete: () => loadMarkdownData()),
       body: Container(
         height: double.infinity,
         child: Stack(
@@ -154,17 +127,15 @@ class _HomeState extends State<Home> {
                           ]),
                       child: ListTile(
                         contentPadding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 16
-                        ),
+                            vertical: 12, horizontal: 16),
                         title: Text(
                           heading,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            letterSpacing: 1.5,
-                            fontWeight: FontWeight.w400
-                          ),
+                          style: TextStyle(
+                              fontSize: 16,
+                              letterSpacing: 1.5,
+                              fontWeight: FontWeight.w400),
                         ),
-                        trailing: const Icon(
+                        trailing: Icon(
                           Icons.arrow_forward_ios,
                           color: MAROON,
                         ),
@@ -172,13 +143,12 @@ class _HomeState extends State<Home> {
                           Navigator.push(
                             context,
                             PageTransition(
-                              child: ContentScreen(
-                                heading: heading,
-                                content: _filteredSections[heading]!,
-                              ),
-                              childCurrent: Home(),
-                              type: PageTransitionType.rightToLeftJoined
-                            ),
+                                child: ContentScreen(
+                                  heading: heading,
+                                  content: _filteredSections[heading]!,
+                                ),
+                                childCurrent: Home(),
+                                type: PageTransitionType.rightToLeftJoined),
                           );
                         },
                       ),
@@ -195,11 +165,10 @@ class _HomeState extends State<Home> {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    offset: const Offset(0, 1),
-                    blurRadius: 15,
-                    spreadRadius: 2.0,
-                    color: Color.fromARGB(125, 158, 11, 0)
-                  ),
+                      offset: const Offset(0, 1),
+                      blurRadius: 15,
+                      spreadRadius: 2.0,
+                      color: Color.fromARGB(125, 158, 11, 0)),
                 ],
               ),
               child: Padding(
@@ -211,12 +180,11 @@ class _HomeState extends State<Home> {
                     children: [
                       Text(
                         greeting,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 31,
-                          fontWeight: FontWeight.w200,
-                          fontFamily: 'mont'
-                        ),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 31,
+                            fontWeight: FontWeight.w200,
+                            fontFamily: 'mont'),
                       ),
                       const Spacer(),
                     ],
@@ -256,10 +224,9 @@ class _HomeState extends State<Home> {
                         color: maroon,
                       ),
                       hintStyle: TextStyle(
-                        color: Color.fromARGB(204, 80, 80, 80),
-                        fontWeight: FontWeight.w300,
-                        letterSpacing: 1.5
-                      ),
+                          color: Color.fromARGB(204, 80, 80, 80),
+                          fontWeight: FontWeight.w300,
+                          letterSpacing: 1.5),
                       enabledBorder: InputBorder.none,
                       focusedBorder: InputBorder.none,
                     ),
