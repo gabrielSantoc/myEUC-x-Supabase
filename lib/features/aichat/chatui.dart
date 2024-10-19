@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:myeuc_x_supabase/shared/app_dialog.dart';
+import 'package:myeuc_x_supabase/helper/helper_functions.dart';
 
 class ChatMessage {
   final String text;
@@ -35,8 +37,7 @@ class _ChatUIState extends State<ChatUI> {
     _initializationFuture = _initializeChat();
     _scrollController.addListener(() {
       setState(() {
-        _isAtBottom = _scrollController.position.pixels ==
-            _scrollController.position.maxScrollExtent;
+        _isAtBottom = _scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 50;
         _imageSize = (400 - (_scrollController.offset / 1)).clamp(50.0, 400.0);
       });
     });
@@ -47,14 +48,14 @@ class _ChatUIState extends State<ChatUI> {
     if (response != null) {
       _messages.add(ChatMessage(text: response, isUserMessage: false));
     }
-    _scrollDown(const Duration(milliseconds: 500));
+    scrollDown(_scrollController, const Duration(milliseconds: 500));
   }
 
   Future<String?> _sendQuery(String query) async {
     try {
       final response = await http.post(
         // Uri.parse('http://192.168.126.64:5000/query'),
-        Uri.parse('https://myeuc-server.onrender.com/query'),
+        Uri.parse('https://myeuc-ai-server.onrender.com/query'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({'query': query}),
       );
@@ -67,10 +68,12 @@ class _ChatUIState extends State<ChatUI> {
       }
     } catch (e) {
       print('Error sending query: $e');
-      showErrorDialog(
-        context,
-        'Connection Error',
-        'Failed to connect to the server. Please check your network connection and try again.',
+      AppDialog.showErrorDialog(
+        context: context,
+        title: 'Connection Error',
+        message:
+            'Failed to connect to the server. Please check your network connection.',
+        onRetry: () => print('Retrying...'), // Optional
       );
       return null;
     }
@@ -81,17 +84,9 @@ class _ChatUIState extends State<ChatUI> {
       _messages.clear();
       _messageController.clear();
       _imageSize = 400;
+      _initializationFuture = _initializeChat();
     });
-    _initializeChat();
-  }
 
-  void _scrollDown(Duration delay) async {
-    await Future.delayed(delay);
-    _scrollController.animateTo(
-      _scrollController.position.maxScrollExtent,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeInOut,
-    );
   }
 
   @override
@@ -101,25 +96,26 @@ class _ChatUIState extends State<ChatUI> {
     super.dispose();
   }
 
-void _sendMessage() async {
-  final text = _messageController.text.trim();
-  if (text.isNotEmpty) {
-    setState(() {
-      _messages.add(ChatMessage(text: text, isUserMessage: true));
-      _messages.add(ChatMessage(text: '', isUserMessage: false, isLoading: true));
-    });
-    _messageController.clear();
-    _scrollDown(const Duration(milliseconds: 500));
+  void _sendMessage() async {
+    final text = _messageController.text.trim();
+    if (text.isNotEmpty) {
+      setState(() {
+        _messages.add(ChatMessage(text: text, isUserMessage: true));
+        _messages
+            .add(ChatMessage(text: '', isUserMessage: false, isLoading: true));
+      });
+      _messageController.clear();
+      scrollDown(_scrollController, const Duration(milliseconds: 500));
 
-    final response = await _sendQuery(text);
-    setState(() {
-      _messages.removeLast();
-      _messages.add(ChatMessage(
-          text: response ?? 'Error occurred', isUserMessage: false));
-    });
-    _scrollDown(const Duration(milliseconds: 500));
+      final response = await _sendQuery(text);
+      setState(() {
+        _messages.removeLast();
+        _messages.add(ChatMessage(
+            text: response ?? 'Error occurred', isUserMessage: false));
+      });
+      scrollDown(_scrollController, const Duration(milliseconds: 500));
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -132,17 +128,19 @@ void _sendMessage() async {
         foregroundColor: Colors.white,
         actions: [
           IconButton(
-            onPressed: () => showConfirmDialog(
-                context,
-                'Delete Conversation',
-                'Are you sure you want to delete this conversation? You won\'t be able to retrieve it.',
-                _resetConversation),
+            onPressed: () => AppDialog.showConfirmDialog(
+              context: context,
+              title: 'Delete Conversation',
+              message:
+                  'Are you sure you want to delete this conversation? You won\'t be able to retrieve it.',
+              onConfirm: _resetConversation,
+            ),
             icon: const Icon(Icons.delete),
           ),
         ],
       ),
       floatingActionButton:
-          _isAtBottom ? null : buildScrollToBottomButton(_scrollDown),
+          _isAtBottom ? null : buildScrollToBottomButton(_scrollController),
       body: FutureBuilder(
         future: _initializationFuture,
         builder: (context, snapshot) {
@@ -175,7 +173,7 @@ void _sendMessage() async {
                   ),
                 ),
                 buildMessageInput(_messageController, _sendMessage,
-                    () => _scrollDown(const Duration(milliseconds: 500))),
+                    () => scrollDown(_scrollController, const Duration(milliseconds: 500))),
               ],
             );
           }
@@ -184,26 +182,26 @@ void _sendMessage() async {
     );
   }
 
-Widget _buildChatBubble(BuildContext context, int index) {
-  final message = _messages[index];
-  if (index == 0 && !message.isUserMessage) {
-    return Column(
-      children: [
-        buildWelcomeImage(_imageSize, _scrollController),
-        ChatBubble(
-          isUserMessage: message.isUserMessage,
-          message: message.text,
-          isLoading: message.isLoading,
-        ),
-      ],
+  Widget _buildChatBubble(BuildContext context, int index) {
+    final message = _messages[index];
+    if (index == 0 && !message.isUserMessage) {
+      return Column(
+        children: [
+          buildWelcomeImage(_imageSize, _scrollController),
+          ChatBubble(
+            isUserMessage: message.isUserMessage,
+            message: message.text,
+            isLoading: message.isLoading,
+          ),
+        ],
+      );
+    }
+    return ChatBubble(
+      isUserMessage: message.isUserMessage,
+      message: message.text,
+      isLoading: message.isLoading,
     );
   }
-  return ChatBubble(
-    isUserMessage: message.isUserMessage,
-    message: message.text,
-    isLoading: message.isLoading,
-  );
-}
 }
 
 class ChatBubble extends StatelessWidget {
@@ -241,7 +239,9 @@ class ChatBubble extends StatelessWidget {
                 : MediaQuery.of(context).size.width - 60,
           ),
           child: Container(
-            padding: isLoading?  const EdgeInsets.symmetric(vertical: 8, horizontal: 15) : const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+            padding: isLoading
+                ? const EdgeInsets.symmetric(vertical: 8, horizontal: 15)
+                : const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
             margin: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: isUserMessage
@@ -279,13 +279,13 @@ class ChatBubble extends StatelessWidget {
 }
 
 // Helper functions
-Widget buildScrollToBottomButton(Function scrollDown) {
+Widget buildScrollToBottomButton(ScrollController scrollController) {
   return Padding(
     padding: const EdgeInsets.only(bottom: 60),
     child: FloatingActionButton.small(
       elevation: 0,
       backgroundColor: Colors.grey[300],
-      onPressed: () => scrollDown(Duration.zero),
+      onPressed: () => scrollDown(scrollController, const Duration(milliseconds: 500)),
       shape: const CircleBorder(),
       child: const Icon(Icons.arrow_downward,
           color: Color.fromARGB(255, 114, 0, 0)),
@@ -341,66 +341,5 @@ Widget buildMessageInput(TextEditingController controller,
         onPressed: sendMessage,
       ),
     ],
-  );
-}
-
-void showErrorDialog(BuildContext context, String title, String content,
-    {VoidCallback? retryAction}) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text(title),
-        content: Text(content),
-        actions: <Widget>[
-          TextButton(
-            style: TextButton.styleFrom(
-                foregroundColor: const Color.fromARGB(255, 155, 10, 0)),
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text('OK'),
-          ),
-          if (retryAction != null)
-            TextButton(
-              style: TextButton.styleFrom(
-                  foregroundColor: const Color.fromARGB(255, 155, 10, 0)),
-              onPressed: () {
-                Navigator.of(context).pop();
-                retryAction();
-              },
-              child: Text('Retry'),
-            ),
-        ],
-      );
-    },
-  );
-}
-
-void showConfirmDialog(BuildContext context, String title, String content,
-    VoidCallback onConfirm) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text(title),
-        content: Text(content),
-        actions: <Widget>[
-          TextButton(
-            style: TextButton.styleFrom(
-                foregroundColor: const Color.fromARGB(255, 155, 10, 0)),
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text('Cancel'),
-          ),
-          TextButton(
-            style: TextButton.styleFrom(
-                foregroundColor: const Color.fromARGB(255, 155, 10, 0)),
-            onPressed: () {
-              onConfirm();
-              Navigator.of(context).pop();
-            },
-            child: Text('Delete'),
-          ),
-        ],
-      );
-    },
   );
 }

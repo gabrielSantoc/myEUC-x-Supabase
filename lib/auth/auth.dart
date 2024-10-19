@@ -38,6 +38,25 @@ class _AuthScreenState extends State<AuthScreen> {
       // handle mfa challenge verified
     }
   });
+  void updateAnalytics(String uid) async {
+    final today = DateTime.now().toUtc().toString().split(' ')[0]; //YYYY-MM-DD format
+
+    // Check if there's already a record for the current day
+    final existingRecord = await supabase
+        .from('tbl_analytics')
+        .select()
+        .eq('uid', uid)
+        .eq('last_opened', today)
+        .maybeSingle();
+
+    if (existingRecord == null) {
+      // If no record exists for today, insert a new one
+      await supabase.from('tbl_analytics').insert({
+        'uid': uid,
+        'last_opened': today,
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -62,6 +81,8 @@ class _AuthScreenState extends State<AuthScreen> {
 
             print("SESSION ::: $session");
             if(session != null) {
+              updateAnalytics(session.user.id);
+              print('ANALYTICS SAVED');
 
               return const NavBar();
 

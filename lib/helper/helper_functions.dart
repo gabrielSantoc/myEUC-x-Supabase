@@ -9,3 +9,12 @@ void displayMessageToUser(String message, BuildContext context) {
     ),
   );
 }
+
+void scrollDown(ScrollController scrollController, Duration delay ) async {
+  await Future.delayed(delay);
+  scrollController.animateTo(
+    scrollController.position.maxScrollExtent,
+    duration: delay,
+    curve: Curves.easeInOut,
+  );
+}
