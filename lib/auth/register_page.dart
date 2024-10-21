@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:myeuc_x_supabase/auth/login_page.dart';
 import 'package:myeuc_x_supabase/components/nav_bar.dart';
+import 'package:myeuc_x_supabase/helper/helper_functions.dart';
 import 'package:myeuc_x_supabase/main.dart';
 import 'package:myeuc_x_supabase/shared/alert.dart';
 import 'package:myeuc_x_supabase/shared/buttons.dart';

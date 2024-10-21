@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myeuc_x_supabase/auth/login_page.dart';
 import 'package:myeuc_x_supabase/components/nav_bar.dart';
+import 'package:myeuc_x_supabase/helper/helper_functions.dart';
 import 'package:myeuc_x_supabase/main.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -38,25 +39,7 @@ class _AuthScreenState extends State<AuthScreen> {
       // handle mfa challenge verified
     }
   });
-  void updateAnalytics(String uid) async {
-    final today = DateTime.now().toUtc().toString().split(' ')[0]; //YYYY-MM-DD format
-
-    // Check if there's already a record for the current day
-    final existingRecord = await supabase
-        .from('tbl_analytics')
-        .select()
-        .eq('uid', uid)
-        .eq('last_opened', today)
-        .maybeSingle();
-
-    if (existingRecord == null) {
-      // If no record exists for today, insert a new one
-      await supabase.from('tbl_analytics').insert({
-        'uid': uid,
-        'last_opened': today,
-      });
-    }
-  }
+  
 
   @override
   void dispose() {
@@ -69,7 +52,7 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       body: StreamBuilder(
         stream: supabase.auth.onAuthStateChange,
         builder: (context, snapshot) {
@@ -82,7 +65,7 @@ class _AuthScreenState extends State<AuthScreen> {
             print("SESSION ::: $session");
             if(session != null) {
               updateAnalytics(session.user.id);
-              print('ANALYTICS SAVED');
+              
 
               return const NavBar();
 

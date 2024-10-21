@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:myeuc_x_supabase/features/aichat/model/chat_model.dart';
+import 'package:myeuc_x_supabase/features/aichat/widgets/chat_bubble.dart';
+import 'package:myeuc_x_supabase/features/aichat/widgets/message_input.dart';
+import 'package:myeuc_x_supabase/features/aichat/widgets/welcome_image.dart';
+import 'package:myeuc_x_supabase/shared/action_button.dart';
 import 'package:myeuc_x_supabase/shared/app_dialog.dart';
 import 'package:myeuc_x_supabase/helper/helper_functions.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class ChatMessage {
-  final String text;
-  final bool isUserMessage;
-  final bool isLoading;
 
-  ChatMessage(
-      {required this.text,
-      required this.isUserMessage,
-      this.isLoading = false});
-}
 
 class ChatUI extends StatefulWidget {
   const ChatUI({super.key});
@@ -30,11 +26,13 @@ class _ChatUIState extends State<ChatUI> {
   bool _isAtBottom = true;
   double _imageSize = 400;
   late Future<void> _initializationFuture;
+  late String _currentUserId;
 
   @override
   void initState() {
     super.initState();
     _initializationFuture = _initializeChat();
+     _currentUserId = Supabase.instance.client.auth.currentUser!.id;
     _scrollController.addListener(() {
       setState(() {
         _isAtBottom = _scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 50;
@@ -62,7 +60,9 @@ class _ChatUIState extends State<ChatUI> {
 
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
+        incrementChatsPerDay(_currentUserId);
         return jsonResponse['groqResponse']['text'];
+        
       } else {
         throw Exception('Failed to load response');
       }
@@ -120,6 +120,7 @@ class _ChatUIState extends State<ChatUI> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       appBar: AppBar(
         title: const Text('Manuel AI',
             style: TextStyle(fontWeight: FontWeight.bold)),
@@ -182,6 +183,7 @@ class _ChatUIState extends State<ChatUI> {
     );
   }
 
+//show image in first message
   Widget _buildChatBubble(BuildContext context, int index) {
     final message = _messages[index];
     if (index == 0 && !message.isUserMessage) {
@@ -204,142 +206,11 @@ class _ChatUIState extends State<ChatUI> {
   }
 }
 
-class ChatBubble extends StatelessWidget {
-  final bool isUserMessage;
-  final String message;
-  final bool isLoading;
 
-  const ChatBubble({
-    required this.isUserMessage,
-    required this.message,
-    this.isLoading = false,
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment:
-          isUserMessage ? MainAxisAlignment.end : MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (!isUserMessage)
-          Padding(
-            padding: const EdgeInsets.only(top: 10, left: 10),
-            child: Image.asset(
-              "assets/icon/iconmanuel.png",
-              width: 30,
-              height: 30,
-            ),
-          ),
-        ConstrainedBox(
-          constraints: BoxConstraints(
-            maxWidth: isUserMessage
-                ? MediaQuery.of(context).size.width * 3 / 4
-                : MediaQuery.of(context).size.width - 60,
-          ),
-          child: Container(
-            padding: isLoading
-                ? const EdgeInsets.symmetric(vertical: 8, horizontal: 15)
-                : const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-            margin: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: isUserMessage
-                  ? const Color.fromARGB(255, 170, 11, 0)
-                  : Colors.grey[300],
-              borderRadius: isUserMessage
-                  ? const BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20))
-                  : const BorderRadius.only(
-                      topRight: Radius.circular(20),
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20)),
-            ),
-            child: isLoading
-                ? LoadingAnimationWidget.waveDots(
-                    color: const Color.fromARGB(97, 0, 0, 0),
-                    size: 25,
-                  )
-                : MarkdownBody(
-                    data: message,
-                    styleSheet: MarkdownStyleSheet(
-                      p: TextStyle(
-                        color: isUserMessage ? Colors.white : Colors.black,
-                      ),
-                      tableBody: const TextStyle(fontSize: 10),
-                    ),
-                  ),
-          ),
-        ),
-      ],
-    );
-  }
-}
 
 // Helper functions
-Widget buildScrollToBottomButton(ScrollController scrollController) {
-  return Padding(
-    padding: const EdgeInsets.only(bottom: 60),
-    child: FloatingActionButton.small(
-      elevation: 0,
-      backgroundColor: Colors.grey[300],
-      onPressed: () => scrollDown(scrollController, const Duration(milliseconds: 500)),
-      shape: const CircleBorder(),
-      child: const Icon(Icons.arrow_downward,
-          color: Color.fromARGB(255, 114, 0, 0)),
-    ),
-  );
-}
 
-Widget buildWelcomeImage(double imageSize, ScrollController scrollController) {
-  return Column(
-    children: [
-      const SizedBox(height: 100),
-      AnimatedContainer(
-        duration: const Duration(milliseconds: 500),
-        curve: Curves.easeInOut,
-        margin: EdgeInsets.only(top: scrollController.offset > 500 ? 40 : 0),
-        child: Image.asset("assets/icon/manuel2.png",
-            width: imageSize, height: imageSize),
-      ),
-      const SizedBox(height: 50),
-    ],
-  );
-}
 
-Widget buildMessageInput(TextEditingController controller,
-    VoidCallback sendMessage, VoidCallback onTap) {
-  return Row(
-    children: [
-      Expanded(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          margin: const EdgeInsets.fromLTRB(10, 10, 3, 10),
-          decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: BorderRadius.circular(20.0)),
-          child: TextField(
-            onTap: onTap,
-            maxLines: 5,
-            minLines: 1,
-            controller: controller,
-            textInputAction: TextInputAction.done,
-            textCapitalization: TextCapitalization.sentences,
-            decoration: const InputDecoration(
-              hintText: 'Enter your message',
-              hintStyle: TextStyle(fontWeight: FontWeight.normal, fontSize: 14),
-              border: InputBorder.none,
-            ),
-          ),
-        ),
-      ),
-      IconButton(
-        icon: const Icon(Icons.send_rounded, size: 30),
-        color: const Color.fromARGB(255, 179, 0, 0),
-        onPressed: sendMessage,
-      ),
-    ],
-  );
-}
+
+
+
