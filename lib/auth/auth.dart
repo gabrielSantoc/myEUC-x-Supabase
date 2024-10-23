@@ -63,10 +63,11 @@ class _AuthScreenState extends State<AuthScreen> {
           if(snapshot.hasData) {
 
             print("SESSION ::: $session");
+
             if(session != null) {
+
               updateAnalytics(session.user.id);
               
-
               return const NavBar();
 
             } else {
@@ -77,7 +78,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
           } else if(snapshot.hasError) {
 
-            return Center(child: Text('Error: ${snapshot.error}'));
+            return Center(child: Text('Error ::: ${snapshot.error}'));
             
           } else {
             return const Center(child: CircularProgressIndicator());

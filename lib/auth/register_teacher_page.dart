@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myeuc_x_supabase/auth/login_page.dart';
-import 'package:myeuc_x_supabase/auth/register_teacher_page.dart';
+import 'package:myeuc_x_supabase/auth/register_page.dart';
 import 'package:myeuc_x_supabase/components/nav_bar.dart';
 import 'package:myeuc_x_supabase/main.dart';
 import 'package:myeuc_x_supabase/shared/alert.dart';
@@ -13,22 +13,21 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:intl/intl.dart';
 
 
-class RegisterStudentScreen extends StatefulWidget {
-  const RegisterStudentScreen({super.key});
+
+class RegisterTeacherScreen extends StatefulWidget {
+  const RegisterTeacherScreen({super.key});
 
   @override
-  State<RegisterStudentScreen> createState() => _RegisterStudentScreenState();
+  State<RegisterTeacherScreen> createState() => RegisterTeacherScreenState();
 }
 
 
-class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
+class RegisterTeacherScreenState extends State<RegisterTeacherScreen> {
   final registerFormKey = GlobalKey<FormState>();
 
-  final _studentNumberController = TextEditingController();
+  final _idNumberController = TextEditingController();
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
-  final _courseController = TextEditingController();
-  final _yearLevelController = TextEditingController();
   final _emailController = TextEditingController();
   final _confirmEmailController = TextEditingController();
   final _birthDateController = TextEditingController();
@@ -38,7 +37,7 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
 
   @override
   void dispose() {
-    _studentNumberController.dispose();
+    _idNumberController.dispose();
     _firstNameController.dispose();
     _lastNameController.dispose();
     _birthDateController.dispose();
@@ -48,33 +47,31 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
   }
   
 
-  bool isStudentBonafide = false;
-  // Function to validate student if bonafide or not based on the enrollment records
-  // Queries the database using the student's provided credentials.
-  // If it has a result, `isStudentBonafide` will be set to true.
-  Future<void> validateStudent() async{  
+  bool isTeacherBonafide = false;
+  // Function to validate teacher if bonafide or not
+  Future<void> validateTeacher() async{  
 
     try {
-      final studentToSearch = await 
+      final teacherToSearch = await 
         Supabase.instance.client
-        .from('tbl_bonafide_students')
+        .from('tbl_bonafide_teachers')
         .select()
-        .eq('student_number', _studentNumberController.text.trim().toUpperCase())
+        .eq('id_number', _idNumberController.text.trim().toUpperCase())
         .eq('first_name', _firstNameController.text.trim().toUpperCase())
         .eq('last_name', _lastNameController.text.trim().toUpperCase());
     
-      if(studentToSearch.isNotEmpty) {
-        print("STUDENT IS BONAFIDE");
-        print("STUDENT TO SEARCH :::: $studentToSearch");
+      if(teacherToSearch.isNotEmpty) {
+        print("TEACHER IS BONAFIDE");
+        print("TEACHER TO SEARCH :::: $teacherToSearch");
         setState(() {
-          isStudentBonafide = true;
+          isTeacherBonafide = true;
         });
 
       } 
       else {
         print("NOT BONAFIDE");
         print(" BONAFIDE");
-        print("STUDENT TO SEARCH :::: $studentToSearch");
+        print("TEACHER TO SEARCH :::: $teacherToSearch");
       } 
     } catch (e) {
       Alert.of(context).showError("$e");
@@ -82,7 +79,7 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
   }
 
   // add user details
-  Future createUser(String studentNo, String firstName, String lastName, String yearLevel, String course, String birthDate, String email, String authId) async{
+  Future createUser(String studentNo, String firstName, String lastName, String birthDate, String email, String authId) async{
 
     await Supabase.instance.client
     .from('tbl_users')
@@ -90,86 +87,25 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
       'student_number': studentNo,
       'first_name'  : firstName,
       'last_name'   : lastName,
-      'year_level'  : yearLevel,
-      'course'      : course,
+      'year_level'  : null,
+      'course'      : null,
       'birthdate'   : birthDate,
       'email'       : email,
       'auth_id'     : authId,
-      'role'        : 'student'
+      'role'        : 'teacher'
     });
 
     print("USER CREATED SUCCESSFULLY");
   }
 
-  
-  // ANCHOR - FUNCTION TO SELECT COURSE
-  final List<String> _levels = ['1', '2', '3', '4',];
-  Future<void> selectYearLevel() async {
-    // Show the Cupertino modal popup
-    await showCupertinoModalPopup<String>(
-      context: context,
-      builder: (_) {
-        return SizedBox(
-          width: double.infinity,
-          height: 250,
-          child: CupertinoPicker(
-            onSelectedItemChanged: (int value) {
-              
-              setState(() {
-                _yearLevelController.text = _levels[value];
-              });
-              print('SECTION :::: ${_levels[value]}'); 
-            },
-            backgroundColor: Colors.white,
-            itemExtent: 30,
-            scrollController: FixedExtentScrollController(
-              initialItem: 0, 
-            ),
-            children: _levels.map((course) => Text(course)).toList(),
-          ),
-        );
-      },
-    );
-  }
-
-  // ANCHOR - FUNCTION TO SELECT COURSE
-  final List<String> _course = ['BSCS', 'BSCE', 'BSN', 'BSBA', 'BSA'];
-  Future<void> selectSection() async {
-    // Show the Cupertino modal popup
-    await showCupertinoModalPopup<String>(
-      context: context,
-      builder: (_) {
-        return SizedBox(
-          width: double.infinity,
-          height: 250,
-          child: CupertinoPicker(
-            onSelectedItemChanged: (int value) {
-              
-              setState(() {
-                _courseController.text = _course[value];
-              });
-              print('SECTION :::: ${_course[value]}'); 
-            },
-            backgroundColor: Colors.white,
-            itemExtent: 30,
-            scrollController: FixedExtentScrollController(
-              initialItem: 0, 
-            ),
-            children: _course.map((course) => Text(course)).toList(),
-          ),
-        );
-      },
-    );
-  }
-
 
  // FUNCTION TO CREATE A NEW ACCOUNT
   void  registerAccount () async{
-    await validateStudent();
+    await validateTeacher();
 
     if(registerFormKey.currentState!.validate()) {
 
-      if( isStudentBonafide ) {
+      if( isTeacherBonafide ) {
 
         try{
 
@@ -185,11 +121,9 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
           final String userId = user!.id;  // get user id
 
           await createUser(
-            _studentNumberController.text.toString().trim(),
+            _idNumberController.text.toString().trim(),
             _firstNameController.text.toString().trim(),
             _lastNameController.text.toString().trim(),
-            _yearLevelController.text.toString().trim(),
-            _courseController.text.toString().trim(),
             _birthDateController.text.toString().trim(),
             _emailController.text.toString().trim(),
             userId
@@ -213,7 +147,7 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
 
       } else {
           
-        Alert.of(context).showError("Student not found, please retry");
+        Alert.of(context).showError("User not found, please retry");
 
       }
 
@@ -242,9 +176,13 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
     }
   }
 
-  // ANCHOR TOGGLE BUTTON STUFF
-  List<bool> isSelected = [ true, false ];
-
+  // TOGGLE BUTTON
+  List<bool> isSelected = [ false, true ];
+  List registerScreen = [
+    const RegisterStudentScreen(),
+    const RegisterTeacherScreen(),
+  ];
+  
   @override
   Widget build(BuildContext context) {
 
@@ -258,7 +196,6 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
           child: Column(
             
             children: [
-
               Container(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * 0.22,
@@ -329,17 +266,15 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
                   ),
                   child: Column(
 
-                    
                     children: [
                       ToggleButtons(
                         onPressed: (int index) {
                           setState(() {
-                            
                             isSelected = [index == 0, index == 1];
-                            if(index == 1) {
-                              Navigator.push(
+                            if(index == 0) {
+                             Navigator.push(
                                 context, 
-                                MaterialPageRoute(builder: (context) => const RegisterTeacherScreen())
+                                MaterialPageRoute(builder: (context) => const RegisterStudentScreen())
                               );
                             }
                           });
@@ -355,19 +290,18 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
                           minWidth: 85.0,
                         ),
                         children: const [
-                      
                           Text("Student"),
+
                           Text("Teacher"),
-                      
                         ],
-                        
                       ),
+
 
                       const SizedBox(height: 5),
           
                       MyTextFormField(
-                        controller: _studentNumberController,
-                        hintText: "Student Number",
+                        controller: _idNumberController,
+                        hintText: "ID Number",
                         obscureText: false,
                         validator: Validator.of(context).validateStudentNumber,
                       ),
@@ -403,39 +337,6 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
                       ),
 
                       SizedBox(height: sizeBoxHeight),
-
-                      // ANCHOR - COURSE AND DEPARTMENT
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                        child: Row(
-                            children: [
-                              Expanded(
-                                child: MyTextFormFieldShortReadOnly(
-                                  onTap: selectSection,
-                                  controller: _courseController,
-                                  hintText: "Course",
-                                  obscureText: false,
-                                  validator: (value)=> Validator.of(context).validateTextField(value, "Course"),
-                                ),
-                              ),
-
-                              const SizedBox(width: 13),
-                              
-                              Expanded(
-                                child: MyTextFormFieldShortReadOnly(
-                                  onTap: selectYearLevel,
-                                  controller: _yearLevelController,
-                                  hintText: "Year Level",
-                                  obscureText: false,
-                                  validator: (value)=> Validator.of(context).validateYearLevel(value, "Year Level"),
-                                ),
-                              ),
-                            ],
-                          ),
-                      ),
-                  
-                      SizedBox(height: sizeBoxHeight),
-                      //Birth Date
                   
                       MyTextFieldFormBrithday(
                         onTap: selectDate,
@@ -514,7 +415,6 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
                   ),
                 ),
               ),
-              // ANCHOR PAGE VIEW
           
               const SizedBox(height: 40),
             ],

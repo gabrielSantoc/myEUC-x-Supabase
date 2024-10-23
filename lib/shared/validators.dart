@@ -3,13 +3,12 @@ class Validator {
   BuildContext context;
   Validator.of(this.context);
   
-
   // STUDENT NO.
   String? validateStudentNumber(String? studentNumber) {
     RegExp studentNumberRegex = RegExp(r'^A\d{2}-\d{4}$');
     final isStudentNumberValid = studentNumberRegex.hasMatch(studentNumber ?? '');
     if (studentNumber.toString().isEmpty) {
-      return 'Student number cannot be empty';
+      return 'ID number cannot be empty';
     }
     if (!isStudentNumberValid) {
       return 'Please enter a valid student number';
@@ -43,7 +42,6 @@ class Validator {
     return null;
   }
   
-
   // VALIDATE NORMAL TEXT FIELD 
   String? validateTextField(String? value, String fieldName) {
     if(value.toString().isEmpty) {

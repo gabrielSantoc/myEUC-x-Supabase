@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:myeuc_x_supabase/auth/forgot_password.dart';
 import 'package:myeuc_x_supabase/auth/register_page.dart';
 import 'package:myeuc_x_supabase/components/nav_bar.dart';
-import 'package:myeuc_x_supabase/helper/helper_functions.dart';
 import 'package:myeuc_x_supabase/main.dart';
 import 'package:myeuc_x_supabase/shared/alert.dart';
 import 'package:myeuc_x_supabase/shared/buttons.dart';
@@ -19,7 +17,6 @@ class LogIn extends StatefulWidget {
   
   @override
   State<LogIn> createState() => _LogInState();
-  
 }
 
 class _LogInState extends State<LogIn> {
@@ -53,8 +50,7 @@ class _LogInState extends State<LogIn> {
         final User? user = res.user; // get authenticated user data object 
         final String userId = user!.id;  // get user id
 
-        print("USER UIID::: $userId"); // G
-        
+        print("USER UIID::: $userId");
 
         LoadingDialog.hideLoading(context);
         
@@ -185,7 +181,7 @@ class _LogInState extends State<LogIn> {
                             const Padding(
                               padding: EdgeInsets.symmetric( horizontal: 25.0 ),
                               child: Text(
-                                'For Students, your initial password is your birthdate in this format YYYY-MM-DD.',
+                                'For new users, your initial password is your birthdate in this format YYYY-MM-DD.',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 11,
@@ -243,7 +239,7 @@ class _LogInState extends State<LogIn> {
                                   onTap: () {
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => const RegisterNew()) //signup
+                                      MaterialPageRoute(builder: (context) => const RegisterStudentScreen()) //signup
                                     );
                                   },
                                   child: const Text(

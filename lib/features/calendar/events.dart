@@ -138,14 +138,18 @@ class MyEucEventsState extends State<MyEucEvents> {
 
 
       var lastModifiedFromHive = boxHeader.get('last-modified');
+      print("LAST MODIFIED NEW       ::: ${lastModifiedNew}");
+      print("LAST MODIFIED FROM HIVE ::: ${boxHeader.get('last-modified')}");
 
       if(lastModifiedFromHive != lastModifiedNew) {
         boxHeader.clear();
         boxEvents.clear();
         storeEventsLocally();
-        return Alert.of(context).showSuccess('Calendar has been updated successfully". 🥰🥰🥰');
+        Alert.of(context).showSuccess('Calendar has been updated successfully". 🥰🥰🥰');
+      } else {
+        Alert.of(context).showSuccess('Calendar is still up to date". 🥰🥰🥰');
       }
-      return Alert.of(context).showSuccess('Calendar is still up to date". 🥰🥰🥰');
+
 
     } on Exception catch(e) {
 
