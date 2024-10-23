@@ -54,9 +54,10 @@ class _LogInScreenState extends State<LogInScreen> {
 
         LoadingDialog.hideLoading(context);
         
-        Navigator.push(
+        Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => const NavBar())
+          MaterialPageRoute(builder: (context) => const NavBar()),
+          (Route<dynamic> route) => false
         );
 
 

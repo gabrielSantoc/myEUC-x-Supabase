@@ -132,9 +132,10 @@ class RegisterTeacherScreenState extends State<RegisterTeacherScreen> {
           LoadingDialog.hideLoading(context);
           print("NEW USER UIID::: $userId");
           
-          Navigator.push(
+          Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => const NavBar())
+            MaterialPageRoute(builder: (context) => const NavBar()),
+            (Route<dynamic> route) => false
           );
 
 

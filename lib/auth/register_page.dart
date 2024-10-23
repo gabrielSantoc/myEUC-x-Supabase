@@ -338,9 +338,10 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
                             
                             isSelected = [index == 0, index == 1];
                             if(index == 1) {
-                              Navigator.push(
+                              Navigator.pushAndRemoveUntil(
                                 context, 
-                                MaterialPageRoute(builder: (context) => const RegisterTeacherScreen())
+                                MaterialPageRoute(builder: (context) => const RegisterTeacherScreen()),
+                                (Route<dynamic> route) => false
                               );
                             }
                           });
@@ -494,7 +495,7 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
                   
                           GestureDetector(
                             onTap: () {
-                               Navigator.push(
+                              Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(builder: (context) => const LogInScreen())
                               );
