@@ -41,17 +41,26 @@ class Validator {
     } 
     return null;
   }
+
+  // VALIDATE NORMAL TEXT FIELD 
+  String? validateConirmPassword(String? confirmPassword, String? password) {
+    if( confirmPassword.toString() != password.toString()) {
+      return 'Please ensure that both password match.';
+    }
+    if(confirmPassword.toString().isEmpty || confirmPassword == null ) {
+      return 'Confirm new password field cannot be empty';
+    }
+    return null;
+  }
+
   
   // VALIDATE NORMAL TEXT FIELD 
   String? validateTextField(String? value, String fieldName) {
-    if(value.toString().isEmpty) {
-      return '${fieldName} cannot be empty';
+    if(value.toString().isEmpty || value == null ) {
+      return '${fieldName} Email cannot be empty';
     }
     if(value.toString().length <= 1) {
       return '${fieldName} must be more than one character';
-    }
-    if(value.toString().isEmpty || value == null ) {
-      return '${fieldName} Email cannot be empty';
     }
     return null;
   }

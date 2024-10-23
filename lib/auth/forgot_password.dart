@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myeuc_x_supabase/auth/reset_password.dart';
 import 'package:myeuc_x_supabase/shared/alert.dart';
 import 'package:myeuc_x_supabase/shared/buttons.dart';
 import 'package:myeuc_x_supabase/shared/textFields.dart';
@@ -56,7 +57,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
 
               const Text(
-                'Enter your email and we will send you a password reset link.',
+                'Enter your email and we will send you a token to reset your password.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 17,
@@ -77,9 +78,31 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           
               MyButton(
                 onTap: _passwordReset,
-                buttonName: 'Reset Password'
-              )
-          
+                buttonName: 'Send Reset Password Token'
+              ),
+
+              const SizedBox(height: 20),
+
+              GestureDetector(
+
+                onTap: () {
+                  Navigator.push(
+                    context, 
+                    MaterialPageRoute(builder: (context) => const ResetPassowrdScreen())
+                  );
+                },
+
+                child: const Text(
+                  'Already have a token? Reset Your Password',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF9e0b0f)
+                  ),
+                  
+                ),
+              ),
+
             ],  
           
           ),

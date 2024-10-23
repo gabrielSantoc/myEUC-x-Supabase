@@ -69,4 +69,36 @@ class AppDialog {
       ),
     );
   }
+
+  static void showSuccessDialog({
+    required BuildContext context,
+    required String title,
+    required String message,
+    required VoidCallback onConfirm,
+  }) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: Text(message),
+        actions: [
+
+          TextButton(
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.black,
+            ),
+            onPressed: () {
+              onConfirm();
+              Navigator.of(context).pop();
+            },
+            child: const Text('Close'),
+          ),
+
+        ],
+      ),
+    );
+  }
+
+
+
 }

@@ -140,6 +140,7 @@ class RegisterTeacherScreenState extends State<RegisterTeacherScreen> {
 
 
         } on AuthException catch(e) {
+          
           LoadingDialog.hideLoading(context);
           Alert.of(context).showError(e.message);
           print("ERROR ::: ${e.code}");
