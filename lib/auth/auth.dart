@@ -72,13 +72,13 @@ class _AuthScreenState extends State<AuthScreen> {
 
             } else {
 
-              return const LogIn();
+              return const LogInScreen();
             }
 
 
           } else if(snapshot.hasError) {
 
-            return Center(child: Text('Error ::: ${snapshot.error}'));
+            return Center(child: Text('Error :: ${snapshot.error}'));
             
           } else {
             return const Center(child: CircularProgressIndicator());

@@ -9,6 +9,7 @@ import 'package:myeuc_x_supabase/shared/buttons.dart';
 import 'package:myeuc_x_supabase/shared/constants.dart';
 import 'package:myeuc_x_supabase/shared/textFields.dart';
 import 'package:myeuc_x_supabase/shared/validators.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:intl/intl.dart';
 
@@ -493,9 +494,9 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
                   
                           GestureDetector(
                             onTap: () {
-                              Navigator.push(
+                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => const LogIn()) //signup
+                                MaterialPageRoute(builder: (context) => const LogInScreen())
                               );
                             },
                             child: const Text(

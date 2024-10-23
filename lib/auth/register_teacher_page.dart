@@ -396,7 +396,7 @@ class RegisterTeacherScreenState extends State<RegisterTeacherScreen> {
                             onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => const LogIn()) //signup
+                                MaterialPageRoute(builder: (context) => const LogInScreen()) //signup
                               );
                             },
                             child: const Text(

@@ -12,14 +12,14 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 
 
-class LogIn extends StatefulWidget {
-  const LogIn({super.key});
+class LogInScreen extends StatefulWidget {
+  const LogInScreen({super.key});
   
   @override
-  State<LogIn> createState() => _LogInState();
+  State<LogInScreen> createState() => _LogInScreenState();
 }
 
-class _LogInState extends State<LogIn> {
+class _LogInScreenState extends State<LogInScreen> {
   final loginFormKey = GlobalKey<FormState>();
 
   bool obscureTextFlag = true;
@@ -178,19 +178,7 @@ class _LogInState extends State<LogIn> {
                         
                             const SizedBox(height: 20),
                         
-                            const Padding(
-                              padding: EdgeInsets.symmetric( horizontal: 25.0 ),
-                              child: Text(
-                                'For new users, your initial password is your birthdate in this format YYYY-MM-DD.',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.black
-                                ),
-                                  
-                              ),
-                            ),
+                            const PasswordGuide(),
                         
                             const SizedBox(height: 15),
                         
@@ -239,11 +227,11 @@ class _LogInState extends State<LogIn> {
                                   onTap: () {
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => const RegisterStudentScreen()) //signup
+                                      MaterialPageRoute(builder: (context) => const RegisterStudentScreen())
                                     );
                                   },
                                   child: const Text(
-                                    "Sign Up",
+                                    "Register",
                                     style: TextStyle(
                                       color: Color(0xFF9e0b0f),
                                       fontWeight: FontWeight.bold
