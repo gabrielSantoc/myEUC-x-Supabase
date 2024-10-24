@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:myeuc_x_supabase/auth/forgot_password.dart';
-import 'package:myeuc_x_supabase/auth/register_page.dart';
 import 'package:myeuc_x_supabase/components/nav_bar.dart';
 import 'package:myeuc_x_supabase/main.dart';
 import 'package:myeuc_x_supabase/shared/alert.dart';
@@ -53,13 +51,7 @@ class _LogInScreenState extends State<LogInScreen> {
         print("USER UIID::: $userId");
 
         LoadingDialog.hideLoading(context);
-        
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => const NavBar()),
-          (Route<dynamic> route) => false
-        );
-
+        Navigator.pushNamedAndRemoveUntil(context, '/homeScreen', (Route<dynamic> route) => false);
 
       } on AuthException catch(e) {
         
@@ -185,10 +177,7 @@ class _LogInScreenState extends State<LogInScreen> {
                         
                             GestureDetector(
                               onTap: () {
-                                Navigator.push(
-                                  context, 
-                                  MaterialPageRoute(builder: (context) => const ForgotPasswordPage())
-                                );
+                                Navigator.pushNamed(context, '/forgotPasswordScreen');
                               },
                               child: const Text(
                                 'Forgot Password ?',
@@ -226,10 +215,7 @@ class _LogInScreenState extends State<LogInScreen> {
                         
                                 GestureDetector(
                                   onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => const RegisterStudentScreen())
-                                    );
+                                    Navigator.pushNamed(context, '/registerStudentScreen');
                                   },
                                   child: const Text(
                                     "Register",

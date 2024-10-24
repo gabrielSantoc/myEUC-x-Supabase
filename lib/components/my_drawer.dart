@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:myeuc_x_supabase/auth/auth.dart';
 import 'package:myeuc_x_supabase/auth/update_password.dart';
 import 'package:myeuc_x_supabase/utils/markdown_utils.dart';
 import 'package:myeuc_x_supabase/main.dart';
@@ -26,12 +25,11 @@ class MyDrawer extends StatelessWidget {
           child: ListTile(
             leading: const Icon(Icons.password),
             title: const Text('Change password'),
-            onTap: () => {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const UpdatePasswordScreen()),
-              )
-            },
+            onTap: () {
+              Navigator.push(context, 
+                MaterialPageRoute(builder: (context) => const ChangePasswordScreen())
+              );
+            } 
           ),
         ),
 
@@ -40,7 +38,8 @@ class MyDrawer extends StatelessWidget {
           child: ListTile(
             leading: const Icon(Icons.question_mark_outlined),
             title: const Text('About & FAQ'),
-            onTap: () => {null
+            onTap: () => {
+              
             },
           ),
         ),
@@ -68,16 +67,9 @@ class MyDrawer extends StatelessWidget {
             title: const Text('Sign Out'),
             onTap: () async{
               await supabase.auth.signOut();
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const AuthScreen()),
-              );
             },
           ),
         ),
-
-
-
       ],),
     );
   }

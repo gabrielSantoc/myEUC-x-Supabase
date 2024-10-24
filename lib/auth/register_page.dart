@@ -199,11 +199,7 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
           LoadingDialog.hideLoading(context);
           print("NEW USER UIID::: $userId");
           
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const NavBar())
-          );
-
+          Navigator.pushNamedAndRemoveUntil(context, '/homeScreen', (Route<dynamic> route) => false);
 
         } on AuthException catch(e) {
           LoadingDialog.hideLoading(context);
@@ -335,14 +331,8 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
                       ToggleButtons(
                         onPressed: (int index) {
                           setState(() {
-                            
-                            isSelected = [index == 0, index == 1];
                             if(index == 1) {
-                              Navigator.pushAndRemoveUntil(
-                                context, 
-                                MaterialPageRoute(builder: (context) => const RegisterTeacherScreen()),
-                                (Route<dynamic> route) => false
-                              );
+                              Navigator.pushNamed(context, '/registerTeacherScreen');
                             }
                           });
                         },
@@ -470,10 +460,8 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
                         controller: _confirmEmailController,
                         hintText: "Confirm Email",
                         obscureText: false,
-                        validator: (value) {
-                          return Validator.of(context)
-                          .validateConfirmEmail(value, _emailController.text);
-                        }
+                        validator: (value) =>  Validator.of(context)
+                        .validateConfirmation(value, _emailController.text, 'Confirm Email')
                       ),
                   
                       const SizedBox(height: 20),
@@ -501,10 +489,7 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
                   
                           GestureDetector(
                             onTap: () {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(builder: (context) => const LogInScreen())
-                              );
+                              Navigator.pushNamed(context, '/loginScreen');
                             },
                             child: const Text(
                               "Log in",

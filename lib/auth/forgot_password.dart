@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:myeuc_x_supabase/auth/reset_password.dart';
 import 'package:myeuc_x_supabase/main.dart';
 import 'package:myeuc_x_supabase/shared/alert.dart';
 import 'package:myeuc_x_supabase/shared/buttons.dart';
@@ -103,10 +102,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 GestureDetector(
             
                   onTap: () {
-                    Navigator.push(
-                      context, 
-                      MaterialPageRoute(builder: (context) => const ResetPassowrdScreen())
-                    );
+                    Navigator.pushNamed(context, '/resetPasswordScreen');
                   },
             
                   child: const Text(

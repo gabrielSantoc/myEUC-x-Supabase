@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:myeuc_x_supabase/components/nav_bar.dart';
 import 'package:myeuc_x_supabase/main.dart';
 import 'package:myeuc_x_supabase/shared/alert.dart';
 import 'package:myeuc_x_supabase/shared/app_dialog.dart';
@@ -9,14 +7,14 @@ import 'package:myeuc_x_supabase/shared/textFields.dart';
 import 'package:myeuc_x_supabase/shared/validators.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class UpdatePasswordScreen extends StatefulWidget {
-  const UpdatePasswordScreen({super.key});
+class ChangePasswordScreen extends StatefulWidget {
+  const ChangePasswordScreen({super.key});
 
   @override
-  State<UpdatePasswordScreen> createState() => _UpdatePasswordScreenState();
+  State<ChangePasswordScreen> createState() => _ChangePasswordScreenState();
 }
 
-class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
+class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   final changePasswordFormKey = GlobalKey<FormState>();
 
   final TextEditingController _passwordController = TextEditingController();
@@ -30,32 +28,6 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
     _passwordController.dispose();
     _newPasswordController.dispose();
     super.dispose();
-  }
-
-
-  void showAlertDialog(BuildContext context) {
-    showCupertinoDialog<void>(
-      context: context,
-      builder: (BuildContext context) => CupertinoAlertDialog(
-        title: const Text('Sucess'),
-        content: const Text('Password updated successfully.'),
-        actions: <CupertinoDialogAction>[
-          CupertinoDialogAction(
-            isDestructiveAction: false,
-            onPressed: () {
-              
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => const NavBar()),
-                (route) => false,
-              );
-
-            },
-            child: const Text('close'),
-          ),
-        ],
-      ),
-    );
   }
 
   Future _passwordReset() async {
@@ -74,11 +46,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
           title: 'Success',
           message: 'Password updated sucessfully.',
           onConfirm: () {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => const NavBar()),
-              (Route<dynamic> route) => false
-            );
+            Navigator.pushNamedAndRemoveUntil(context, '/homeScreen', (Route<dynamic> route) => false);
           }
         );
 

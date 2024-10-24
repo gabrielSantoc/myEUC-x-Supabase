@@ -35,16 +35,14 @@ class Validator {
     return null;
   }
 
-  // CONFIRM EMAIL
-  String? validateConfirmEmail(String? email, String? originalEmail) {
-    RegExp emailRegex = RegExp(r'^[\w\.-]+@[\w-]+\w{2,3}(\.\w{2,3})?$');
-    final isEmailValid = emailRegex.hasMatch(email ?? '');
-    if( email.toString() != originalEmail.toString()) {
-      return 'Please ensure that both email addresses match.';
+  // Validate Confirmation
+  String? validateConfirmation(String? value, String? originalValue, String fieldName) {
+    if(value.toString().isEmpty) {
+      return '$fieldName cannot be empty';
     }
-    if(!isEmailValid) {
-      return 'Please enter a valid email';
-    } 
+    if(value != originalValue) {
+      return '$fieldName does not match';
+    }
     return null;
   }
 
@@ -55,17 +53,6 @@ class Validator {
     }
     if(value == null || !regex.hasMatch(value)) {
       return errorMessage;
-    }
-    return null;
-  }
-
-  // Validate Confirmation
-  String? validateConfirmation(String? value, String? originalValue, String fieldName) {
-    if(value.toString().isEmpty) {
-      return '$fieldName cannot be empty';
-    }
-    if(value != originalValue) {
-      return '$fieldName does not match';
     }
     return null;
   }

@@ -272,12 +272,8 @@ class RegisterTeacherScreenState extends State<RegisterTeacherScreen> {
                       ToggleButtons(
                         onPressed: (int index) {
                           setState(() {
-                            isSelected = [index == 0, index == 1];
                             if(index == 0) {
-                             Navigator.push(
-                                context, 
-                                MaterialPageRoute(builder: (context) => const RegisterStudentScreen())
-                              );
+                              Navigator.pushNamed(context, '/registerStudentScreen');
                             }
                           });
                         },
@@ -293,11 +289,10 @@ class RegisterTeacherScreenState extends State<RegisterTeacherScreen> {
                         ),
                         children: const [
                           Text("Student"),
-
                           Text("Teacher"),
                         ],
-                      ),
 
+                      ),
 
                       const SizedBox(height: 5),
           
@@ -373,7 +368,7 @@ class RegisterTeacherScreenState extends State<RegisterTeacherScreen> {
                         obscureText: false,
                         validator: (value) {
                           return Validator.of(context)
-                          .validateConfirmEmail(value, _emailController.text);
+                          .validateConfirmation(value, _emailController.text, 'Confirm Email');
                         }
                       ),
                   
