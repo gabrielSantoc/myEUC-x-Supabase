@@ -88,8 +88,8 @@ class AppDialog {
               foregroundColor: Colors.black,
             ),
             onPressed: () {
-              onConfirm();
               Navigator.of(context).pop();
+              onConfirm();
             },
             child: const Text('Close'),
           ),

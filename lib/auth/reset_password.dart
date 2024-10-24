@@ -86,12 +86,7 @@ class _ResetPassowrdScreenState extends State<ResetPassowrdScreen> {
           context: context,
           title: 'Success',
           message: 'Your password has been changed. You can now log in with your new credentials. 🥰🥰🥰',
-          onConfirm: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const AuthScreen()),
-            );
-          }
+          onConfirm: ()=> Navigator.pushNamedAndRemoveUntil(context, '/homeScreen', (Route<dynamic> route) => false)
         );
 
       } on AuthException catch (error) {
