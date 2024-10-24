@@ -305,7 +305,13 @@ class RegisterTeacherScreenState extends State<RegisterTeacherScreen> {
                         controller: _idNumberController,
                         hintText: "ID Number",
                         obscureText: false,
-                        validator: Validator.of(context).validateStudentNumber,
+                        validator: (value)=> Validator.of(context)
+                        .validateWithRegex(
+                          value,
+                          'ID number cannot found',
+                          'StudentNumber',
+                          RegExp(r'^A\d{2}-\d{4}$')
+                        ),
                       ),
                         
                       SizedBox(height: sizeBoxHeight),

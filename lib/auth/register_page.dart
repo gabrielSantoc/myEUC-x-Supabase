@@ -371,7 +371,13 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
                         controller: _studentNumberController,
                         hintText: "Student Number",
                         obscureText: false,
-                        validator: Validator.of(context).validateStudentNumber,
+                        validator:(value)=> Validator.of(context)
+                        .validateWithRegex(
+                          value,
+                          'ID number cannot found',
+                          'Student Number',
+                          RegExp(r'^A\d{2}-\d{4}$')
+                        ),
                       ),
                         
                       SizedBox(height: sizeBoxHeight),
@@ -429,7 +435,7 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
                                   controller: _yearLevelController,
                                   hintText: "Year Level",
                                   obscureText: false,
-                                  validator: (value)=> Validator.of(context).validateYearLevel(value, "Year Level"),
+                                  validator: (value)=> Validator.of(context).validateRequiredField(value, "Year Level"),
                                 ),
                               ),
                             ],

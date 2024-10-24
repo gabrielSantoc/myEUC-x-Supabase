@@ -164,7 +164,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                   
                   validator: (value) {
                     return Validator.of(context)
-                    .validateConirmPassword(value, _passwordController.text.trim());
+                    .validateConfirmation(value, _passwordController.text.trim(), 'Password');
                   }
                 ),
             

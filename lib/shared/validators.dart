@@ -2,16 +2,22 @@ import 'package:flutter/material.dart';
 class Validator {
   BuildContext context;
   Validator.of(this.context);
-  
-  // STUDENT NO.
-  String? validateStudentNumber(String? studentNumber) {
-    RegExp studentNumberRegex = RegExp(r'^A\d{2}-\d{4}$');
-    final isStudentNumberValid = studentNumberRegex.hasMatch(studentNumber ?? '');
-    if (studentNumber.toString().isEmpty) {
-      return 'ID number cannot be empty';
+
+  // VALIDATE REQUIRED FIELD
+  String? validateRequiredField(String? value, String? fieldName) {
+    if(value.toString().isEmpty) {
+      return '$fieldName cannot be empty';
     }
-    if (!isStudentNumberValid) {
-      return 'Please enter a valid student number';
+    return null;
+  }
+
+  // VALIDATE NORMAL TEXT FIELD 
+  String? validateTextField(String? value, String fieldName) {
+    if(value.toString().isEmpty || value == null ) {
+      return '${fieldName} cannot be empty';
+    }
+    if(value.toString().length <= 1) {
+      return '${fieldName} must be more than one character';
     }
     return null;
   }
@@ -42,33 +48,24 @@ class Validator {
     return null;
   }
 
-  // VALIDATE NORMAL TEXT FIELD 
-  String? validateConirmPassword(String? confirmPassword, String? password) {
-    if( confirmPassword.toString() != password.toString()) {
-      return 'Please ensure that both password match.';
-    }
-    if(confirmPassword.toString().isEmpty || confirmPassword == null ) {
-      return 'Confirm new password field cannot be empty';
-    }
-    return null;
-  }
-
-  
-  // VALIDATE NORMAL TEXT FIELD 
-  String? validateTextField(String? value, String fieldName) {
-    if(value.toString().isEmpty || value == null ) {
-      return '${fieldName} Email cannot be empty';
-    }
-    if(value.toString().length <= 1) {
-      return '${fieldName} must be more than one character';
-    }
-    return null;
-  }
-
-  // VALIDATE YEAR LEVEL 
-  String? validateYearLevel(String? value, String yearLevel) {
+  // VALIDATE REGEX VALIDATION
+  String? validateWithRegex(String? value, String errorMessage, String? fieldName, RegExp regex) {
     if(value.toString().isEmpty) {
-      return '${yearLevel} cannot be empty';
+      return '$fieldName cannot be empty';
+    }
+    if(value == null || !regex.hasMatch(value)) {
+      return errorMessage;
+    }
+    return null;
+  }
+
+  // Validate Confirmation
+  String? validateConfirmation(String? value, String? originalValue, String fieldName) {
+    if(value.toString().isEmpty) {
+      return '$fieldName cannot be empty';
+    }
+    if(value != originalValue) {
+      return '$fieldName does not match';
     }
     return null;
   }
