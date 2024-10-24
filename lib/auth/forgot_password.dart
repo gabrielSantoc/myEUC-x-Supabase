@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:myeuc_x_supabase/auth/reset_password.dart';
+import 'package:myeuc_x_supabase/main.dart';
 import 'package:myeuc_x_supabase/shared/alert.dart';
 import 'package:myeuc_x_supabase/shared/buttons.dart';
 import 'package:myeuc_x_supabase/shared/textFields.dart';
 import 'package:myeuc_x_supabase/shared/validators.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
@@ -13,6 +15,9 @@ class ForgotPasswordPage extends StatefulWidget {
 }
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
+  
+  final forgotPasswordFormKey = GlobalKey<FormState>();
+
   final TextEditingController _emailController = TextEditingController();
 
   @override
@@ -21,17 +26,27 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     super.dispose();
   }
 
-  Future _passwordReset() async {
+  Future sendToken() async {
 
-    try {
+    if(forgotPasswordFormKey.currentState!.validate()) {
 
-      // await FirebaseAuth.instance.sendPasswordResetEmail(email: _emailController.text.trim());
-      Alert.of(context).showSuccess('Password reset link sent! Check your email 🥰🥰🥰');
+      try {
 
-    } catch (error) {
-      
-      Alert.of(context).showError('An error occured, please try again 😢😢😢');
-      
+        final res = await supabase.auth.resetPasswordForEmail(
+          _emailController.text.trim()
+        );
+
+        Alert.of(context).showSuccess('Please check your email and spam folder for the TOKEN if it is not in your inbox! 🥰🥰🥰');
+
+      } on AuthException catch (error) {
+        
+        Alert.of(context).showError('${error.message} 😢😢😢');
+
+      }
+
+    } else {
+
+      Alert.of(context).showError('An error occured please try again 😢');
 
     }
 
@@ -50,65 +65,66 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
         child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(height: 100),
-
-
-              const Text(
-                'Enter your email and we will send you a token to reset your password.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w300
-                ),
-              ),
-          
-              const SizedBox(height: 40),
-          
-              MyTextFormField(
-                controller: _emailController,
-                hintText: 'Email',
-                obscureText: false,
-                validator: Validator.of(context).validateEmail,
-              ),
-              
-              const SizedBox(height: 20),
-          
-              MyButton(
-                onTap: _passwordReset,
-                buttonName: 'Send Reset Password Token'
-              ),
-
-              const SizedBox(height: 20),
-
-              GestureDetector(
-
-                onTap: () {
-                  Navigator.push(
-                    context, 
-                    MaterialPageRoute(builder: (context) => const ResetPassowrdScreen())
-                  );
-                },
-
-                child: const Text(
-                  'Already have a token? Reset Your Password',
+          child: Form(
+            key: forgotPasswordFormKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 100),
+            
+            
+                const Text(
+                  'Enter your email and we will send you a token to reset your password.',
+                  textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF9e0b0f)
+                    fontSize: 17,
+                    fontWeight: FontWeight.w300
                   ),
-                  
                 ),
-              ),
-
-            ],  
-          
+            
+                const SizedBox(height: 40),
+            
+                MyTextFormField(
+                  controller: _emailController,
+                  hintText: 'Email',
+                  obscureText: false,
+                  validator: Validator.of(context).validateEmail,
+                ),
+                
+                const SizedBox(height: 20),
+            
+                MyButton(
+                  onTap: sendToken,
+                  buttonName: 'Send Reset Password Token'
+                ),
+            
+                const SizedBox(height: 20),
+            
+                GestureDetector(
+            
+                  onTap: () {
+                    Navigator.push(
+                      context, 
+                      MaterialPageRoute(builder: (context) => const ResetPassowrdScreen())
+                    );
+                  },
+            
+                  child: const Text(
+                    'Already have a token? Reset Your Password',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF9e0b0f)
+                    ),
+                    
+                  ),
+                ),
+            
+              ],  
+            ),
           ),
         ),
       ),
-
     );
   }
 }

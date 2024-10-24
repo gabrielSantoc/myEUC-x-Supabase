@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:myeuc_x_supabase/auth/auth.dart';
 import 'package:myeuc_x_supabase/components/nav_bar.dart';
 import 'package:myeuc_x_supabase/main.dart';
 import 'package:myeuc_x_supabase/shared/alert.dart';
@@ -20,6 +21,7 @@ class _ResetPassowrdScreenState extends State<ResetPassowrdScreen> {
   final resetPasswordFormKey = GlobalKey<FormState>();
 
 
+  final TextEditingController _resetTokenController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _newPasswordController = TextEditingController();
@@ -60,26 +62,34 @@ class _ResetPassowrdScreenState extends State<ResetPassowrdScreen> {
     );
   }
 
-  Future _passwordReset() async {
+  Future resetPassword() async {
 
     if(resetPasswordFormKey.currentState!.validate()) {
+
       try {
+
+        final recovery = await supabase.auth.verifyOTP(
+          email: _emailController.text.toString().trim(),
+          token: _resetTokenController.text.toString().trim(),
+          type: OtpType.recovery,
+        );
+
+        print("Recovery ::: ${recovery}");
 
         final res = await supabase.auth.updateUser(
           UserAttributes(
             password: _passwordController.text.trim()
           )
         );
-        
+
         AppDialog.showSuccessDialog(
           context: context,
           title: 'Success',
-          message: 'Password updated sucessfully.',
+          message: 'Your password has been changed. You can now log in with your new credentials. 🥰🥰🥰',
           onConfirm: () {
-            Navigator.pushAndRemoveUntil(
+            Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const NavBar()),
-              (Route<dynamic> route) => false
+              MaterialPageRoute(builder: (context) => const AuthScreen()),
             );
           }
         );
@@ -88,7 +98,6 @@ class _ResetPassowrdScreenState extends State<ResetPassowrdScreen> {
         
         Alert.of(context).showError('${error.message} 😢😢😢');
         
-
       }
 
     } else {
@@ -132,7 +141,7 @@ class _ResetPassowrdScreenState extends State<ResetPassowrdScreen> {
                 const SizedBox(height: 40),
 
                 MyTextFormField(
-                  controller: _emailController,
+                  controller: _resetTokenController,
                   hintText: "Reset Token",
                   obscureText: false,
                   validator: (value) => Validator.of(context).validateTextField(value, 'Reset Token'),
@@ -192,7 +201,7 @@ class _ResetPassowrdScreenState extends State<ResetPassowrdScreen> {
                 const SizedBox(height: 20),
             
                 MyButton(
-                  onTap: _passwordReset,
+                  onTap: resetPassword,
                   buttonName: 'Reset'
                 )
             
