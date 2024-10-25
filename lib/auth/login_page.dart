@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:myeuc_x_supabase/auth/forgot_password.dart';
-import 'package:myeuc_x_supabase/auth/register_page.dart';
 import 'package:myeuc_x_supabase/components/nav_bar.dart';
-import 'package:myeuc_x_supabase/helper/helper_functions.dart';
 import 'package:myeuc_x_supabase/main.dart';
 import 'package:myeuc_x_supabase/shared/alert.dart';
 import 'package:myeuc_x_supabase/shared/buttons.dart';
@@ -14,15 +10,14 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 
 
-class LogIn extends StatefulWidget {
-  const LogIn({super.key});
+class LogInScreen extends StatefulWidget {
+  const LogInScreen({super.key});
   
   @override
-  State<LogIn> createState() => _LogInState();
-  
+  State<LogInScreen> createState() => _LogInScreenState();
 }
 
-class _LogInState extends State<LogIn> {
+class _LogInScreenState extends State<LogInScreen> {
   final loginFormKey = GlobalKey<FormState>();
 
   bool obscureTextFlag = true;
@@ -53,16 +48,10 @@ class _LogInState extends State<LogIn> {
         final User? user = res.user; // get authenticated user data object 
         final String userId = user!.id;  // get user id
 
-        print("USER UIID::: $userId"); // G
-        
+        print("USER UIID::: $userId");
 
         LoadingDialog.hideLoading(context);
-        
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const NavBar())
-        );
-
+        Navigator.pushNamedAndRemoveUntil(context, '/homeScreen', (Route<dynamic> route) => false);
 
       } on AuthException catch(e) {
         
@@ -182,28 +171,13 @@ class _LogInState extends State<LogIn> {
                         
                             const SizedBox(height: 20),
                         
-                            const Padding(
-                              padding: EdgeInsets.symmetric( horizontal: 25.0 ),
-                              child: Text(
-                                'For Students, your initial password is your birthdate in this format YYYY-MM-DD.',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.black
-                                ),
-                                  
-                              ),
-                            ),
+                            const PasswordGuide(),
                         
                             const SizedBox(height: 15),
                         
                             GestureDetector(
                               onTap: () {
-                                Navigator.push(
-                                  context, 
-                                  MaterialPageRoute(builder: (context) => const ForgotPasswordPage())
-                                );
+                                Navigator.pushNamed(context, '/forgotPasswordScreen');
                               },
                               child: const Text(
                                 'Forgot Password ?',
@@ -241,13 +215,10 @@ class _LogInState extends State<LogIn> {
                         
                                 GestureDetector(
                                   onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => const RegisterNew()) //signup
-                                    );
+                                    Navigator.pushNamed(context, '/registerStudentScreen');
                                   },
                                   child: const Text(
-                                    "Sign Up",
+                                    "Register",
                                     style: TextStyle(
                                       color: Color(0xFF9e0b0f),
                                       fontWeight: FontWeight.bold

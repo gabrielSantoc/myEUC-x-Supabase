@@ -56,8 +56,8 @@ class _NavBar extends State<NavBar> {
             },
             items: [
               TabItem(
-                  icon: Image.asset('assets/home.png'),
-                  activeIcon: Image.asset('assets/home2.png'),
+                  icon: Image.asset('assets/icon/home.png'),
+                  activeIcon: Image.asset('assets/icon/home2.png'),
                   title: 'Home'
                 ),
 
@@ -68,9 +68,9 @@ class _NavBar extends State<NavBar> {
 
               TabItem(
                 icon: Image.asset(
-                  'assets/calendar.png',
+                  'assets/icon/calendar.png',
                 ),
-                activeIcon: Image.asset('assets/calendar2.png'),
+                activeIcon: Image.asset('assets/icon/calendar2.png'),
                 title: 'Calendar',
                 
               ),

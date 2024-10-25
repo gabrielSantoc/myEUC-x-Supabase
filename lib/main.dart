@@ -1,7 +1,14 @@
 import "package:flutter/material.dart";
 import "package:hive_flutter/adapters.dart";
 import "package:myeuc_x_supabase/auth/auth.dart";
+import "package:myeuc_x_supabase/auth/forgot_password.dart";
+import "package:myeuc_x_supabase/auth/login_page.dart";
+import "package:myeuc_x_supabase/auth/register_page.dart";
+import "package:myeuc_x_supabase/auth/register_teacher_page.dart";
+import "package:myeuc_x_supabase/auth/reset_password.dart";
+import "package:myeuc_x_supabase/auth/update_password.dart";
 import "package:myeuc_x_supabase/box/boxes.dart";
+import "package:myeuc_x_supabase/components/nav_bar.dart";
 import "package:myeuc_x_supabase/features/calendar/model/eventModelHive.dart";
 import "package:supabase_flutter/supabase_flutter.dart";
 import 'package:onesignal_flutter/onesignal_flutter.dart';
@@ -37,9 +44,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // return LoginPage();
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: AuthScreen(),
+      home: const AuthScreen(),
+      routes: {
+        '/homeScreen' : (context) => const NavBar(),
+        '/forgotPasswordScreen' : (context) => const ForgotPasswordPage(), 
+        '/resetPasswordScreen'  : (context) => const ResetPassowrdScreen(),
+        '/authScreen'           : (context) => const AuthScreen(),
+        '/loginScreen'          : (context) => const LogInScreen(),
+        '/changePasswordScreen' : (context) => const ChangePasswordScreen(),
+        '/registerStudentScreen': (context) => const RegisterStudentScreen(),
+        '/registerTeacherScreen': (context) => const RegisterTeacherScreen(),
+      },
     );
   }
 }

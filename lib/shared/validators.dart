@@ -2,17 +2,22 @@ import 'package:flutter/material.dart';
 class Validator {
   BuildContext context;
   Validator.of(this.context);
-  
 
-  // STUDENT NO.
-  String? validateStudentNumber(String? studentNumber) {
-    RegExp studentNumberRegex = RegExp(r'^A\d{2}-\d{4}$');
-    final isStudentNumberValid = studentNumberRegex.hasMatch(studentNumber ?? '');
-    if (studentNumber.toString().isEmpty) {
-      return 'Student number cannot be empty';
+  // VALIDATE REQUIRED FIELD
+  String? validateRequiredField(String? value, String? fieldName) {
+    if(value.toString().isEmpty) {
+      return '$fieldName cannot be empty';
     }
-    if (!isStudentNumberValid) {
-      return 'Please enter a valid student number';
+    return null;
+  }
+
+  // VALIDATE NORMAL TEXT FIELD 
+  String? validateTextField(String? value, String fieldName) {
+    if(value.toString().isEmpty || value == null ) {
+      return '${fieldName} cannot be empty';
+    }
+    if(value.toString().length <= 1) {
+      return '${fieldName} must be more than one character';
     }
     return null;
   }
@@ -30,38 +35,24 @@ class Validator {
     return null;
   }
 
-  // CONFIRM EMAIL
-  String? validateConfirmEmail(String? email, String? originalEmail) {
-    RegExp emailRegex = RegExp(r'^[\w\.-]+@[\w-]+\w{2,3}(\.\w{2,3})?$');
-    final isEmailValid = emailRegex.hasMatch(email ?? '');
-    if( email.toString() != originalEmail.toString()) {
-      return 'Please ensure that both email addresses match.';
-    }
-    if(!isEmailValid) {
-      return 'Please enter a valid email';
-    } 
-    return null;
-  }
-  
-
-  // VALIDATE NORMAL TEXT FIELD 
-  String? validateTextField(String? value, String fieldName) {
+  // Validate Confirmation
+  String? validateConfirmation(String? value, String? originalValue, String fieldName) {
     if(value.toString().isEmpty) {
-      return '${fieldName} cannot be empty';
+      return '$fieldName cannot be empty';
     }
-    if(value.toString().length <= 1) {
-      return '${fieldName} must be more than one character';
-    }
-    if(value.toString().isEmpty || value == null ) {
-      return '${fieldName} Email cannot be empty';
+    if(value != originalValue) {
+      return '$fieldName does not match';
     }
     return null;
   }
 
-  // VALIDATE YEAR LEVEL 
-  String? validateYearLevel(String? value, String yearLevel) {
+  // VALIDATE REGEX VALIDATION
+  String? validateWithRegex(String? value, String errorMessage, String? fieldName, RegExp regex) {
     if(value.toString().isEmpty) {
-      return '${yearLevel} cannot be empty';
+      return '$fieldName cannot be empty';
+    }
+    if(value == null || !regex.hasMatch(value)) {
+      return errorMessage;
     }
     return null;
   }

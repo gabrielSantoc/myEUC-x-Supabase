@@ -35,8 +35,8 @@ class MyDrawer extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 10.0),
           child: ListTile(
-            leading: Icon(Icons.download),
-            title: Text('Check for Updates'),
+            leading: const Icon(Icons.download),
+            title: const Text('Check for Updates'),
             onTap: () async{
               
               await MarkdownUtils.updateMarkdownFile();
@@ -51,20 +51,13 @@ class MyDrawer extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 10.0),
           child: ListTile(
-            leading: Icon(Icons.logout),
-            title: Text('Sign Out'),
+            leading: const Icon(Icons.logout),
+            title: const Text('Sign Out'),
             onTap: () async{
               await supabase.auth.signOut();
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const AuthScreen()),
-              );
             },
           ),
         ),
-
-
-
       ],),
     );
   }
