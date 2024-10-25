@@ -63,7 +63,7 @@ class _AuthScreenState extends State<AuthScreen> {
           if(snapshot.hasData) {
 
             print("SESSION ::: $session");
-            if(session != null) {
+            if(session != null)  {
               updateAnalytics(session.user.id);
               
 
