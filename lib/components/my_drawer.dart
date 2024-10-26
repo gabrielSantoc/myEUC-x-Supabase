@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myeuc_x_supabase/auth/update_password.dart';
+import 'package:myeuc_x_supabase/auth/auth.dart';
+import 'package:myeuc_x_supabase/components/manual.dart';
 import 'package:myeuc_x_supabase/utils/markdown_utils.dart';
 import 'package:myeuc_x_supabase/main.dart';
 import 'package:myeuc_x_supabase/shared/alert.dart';
@@ -23,23 +24,10 @@ class MyDrawer extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 10.0),
           child: ListTile(
-            leading: const Icon(Icons.password),
-            title: const Text('Change password'),
-            onTap: () {
-              Navigator.push(context, 
-                MaterialPageRoute(builder: (context) => const ChangePasswordScreen())
-              );
-            } 
-          ),
-        ),
-
-        Padding(
-          padding: const EdgeInsets.only(left: 10.0),
-          child: ListTile(
-            leading: const Icon(Icons.question_mark_outlined),
-            title: const Text('About & FAQ'),
+            leading: Icon(Icons.book),
+            title: Text('User Manual'),
             onTap: () => {
-              
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> Manual()))
             },
           ),
         ),
