@@ -83,13 +83,8 @@ class _HomeState extends State<Home> {
         elevation: 0,
         scrolledUnderElevation: 0,
         foregroundColor: Colors.white,
-        actions: [
-          Padding(
-              padding: EdgeInsets.only(right: 14.0),
-              child: IconButton(
-                  onPressed: () => {},
-                  icon: Image.asset('assets/sample-icon.png')))
-        ],
+
+        
       ),
       drawer:  MyDrawer(onUpdateComplete: () => loadMarkdownData()),
       body: Container(
