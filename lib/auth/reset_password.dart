@@ -192,7 +192,7 @@ class _ResetPassowrdScreenState extends State<ResetPassowrdScreen> {
                     .validateConfirmation(
                       value,
                       _passwordController.text.trim(),
-                      'Password'
+                      'Confirm Password'
                     );
                   }
                 ),
