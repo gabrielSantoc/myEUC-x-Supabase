@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myeuc_x_supabase/auth/auth.dart';
 import 'package:myeuc_x_supabase/auth/update_password.dart';
+import 'package:myeuc_x_supabase/components/FAQ.dart';
 import 'package:myeuc_x_supabase/components/manual.dart';
 import 'package:myeuc_x_supabase/utils/markdown_utils.dart';
 import 'package:myeuc_x_supabase/main.dart';
@@ -21,6 +22,17 @@ class MyDrawer extends StatelessWidget {
         
           DrawerHeader(
             child: Image.asset('assets/logo.png')
+          ),
+
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: ListTile(
+              leading: const Icon(Icons.question_answer),
+              title: const Text('FAQ'),
+              onTap: () => {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> const FAQScreen()))
+              },
+            ),
           ),
 
           Padding(
