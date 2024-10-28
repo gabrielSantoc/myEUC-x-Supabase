@@ -1,15 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:myeuc_x_supabase/auth/login_page.dart';
-import 'package:myeuc_x_supabase/auth/register_teacher_page.dart';
-import 'package:myeuc_x_supabase/components/nav_bar.dart';
 import 'package:myeuc_x_supabase/main.dart';
 import 'package:myeuc_x_supabase/shared/alert.dart';
 import 'package:myeuc_x_supabase/shared/buttons.dart';
 import 'package:myeuc_x_supabase/shared/constants.dart';
 import 'package:myeuc_x_supabase/shared/textFields.dart';
 import 'package:myeuc_x_supabase/shared/validators.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:intl/intl.dart';
 
@@ -34,7 +30,7 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
   final _confirmEmailController = TextEditingController();
   final _birthDateController = TextEditingController();
 
-  final double sizeBoxHeight = 20;
+  final double sizeBoxHeight = 15;
 
 
   @override
@@ -70,13 +66,8 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
         setState(() {
           isStudentBonafide = true;
         });
+      } 
 
-      } 
-      else {
-        print("NOT BONAFIDE");
-        print(" BONAFIDE");
-        print("STUDENT TO SEARCH :::: $studentToSearch");
-      } 
     } catch (e) {
       Alert.of(context).showError("$e");
     }
@@ -258,7 +249,7 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
 
               Container(
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.22,
+                height: MediaQuery.of(context).size.height * 0.19,
                 decoration: const BoxDecoration(
                   color: Color(0xFF9e0b0f),
 
@@ -286,7 +277,7 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
                         "Create Your",
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 34,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold
                         ),
                       ),
@@ -295,7 +286,7 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
                         "Account",
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 34,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold
                   
                         ),
@@ -483,7 +474,7 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                   
-                          const Text("Already have an account? "),
+                          const Text("Already have an account? ", style: TextStyle(fontSize: 11)),
                   
                           const SizedBox(width: 20),
                   
@@ -495,7 +486,8 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
                               "Log in",
                               style: TextStyle(
                                 color: MAROON,
-                                fontWeight: FontWeight.bold
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12
                               ),
                             ),
                           ),

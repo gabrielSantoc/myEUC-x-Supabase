@@ -60,9 +60,8 @@ class _HomeState extends State<Home> {
       results = _sections;
     } else {
       results = _sections.keys
-          .where(
-              (key) => key.toLowerCase().contains(enteredKeyword.toLowerCase()))
-          .fold({}, (result, key) {
+      .where( (key) => key.toLowerCase().contains(enteredKeyword.toLowerCase()) )
+      .fold({}, (result, key) {
         result[key] = _sections[key]!;
         return result;
       });
@@ -97,40 +96,42 @@ class _HomeState extends State<Home> {
                 right: 0,
                 bottom: 0,
                 child: ListView.builder(
-                  padding: EdgeInsets.only(top: 50),
+                  padding: const EdgeInsets.only(top: 50),
                   shrinkWrap: true,
                   itemCount: _filteredSections.length,
                   itemBuilder: (context, index) {
                     final heading = _filteredSections.keys.elementAt(index);
                     return Container(
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 15.0, vertical: 5.0),
+                      margin: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20.0),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                                offset: Offset(4, 4),
-                                blurRadius: 15,
-                                color: Colors.grey.shade500,
-                                spreadRadius: 1),
-                            const BoxShadow(
-                                offset: Offset(-4, -4),
-                                blurRadius: 15,
-                                color: Colors.white,
-                                spreadRadius: 1),
-                          ]),
+                        borderRadius: BorderRadius.circular(20.0),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            offset: Offset(4, 4),
+                            blurRadius: 15,
+                            color: Colors.grey.shade500,
+                            spreadRadius: 1
+                          ),
+                          const BoxShadow(
+                            offset: Offset(-4, -4),
+                            blurRadius: 15,
+                            color: Colors.white,
+                            spreadRadius: 1
+                          ),
+                        ]
+                      ),
                       child: ListTile(
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 12, horizontal: 16),
+                        contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                         title: Text(
                           heading,
-                          style: TextStyle(
-                              fontSize: 16,
-                              letterSpacing: 1.5,
-                              fontWeight: FontWeight.w400),
+                          style: const TextStyle(
+                            fontSize: 16,
+                            letterSpacing: 1.5,
+                            fontWeight: FontWeight.w400
+                          ),
                         ),
-                        trailing: Icon(
+                        trailing: const Icon(
                           Icons.arrow_forward_ios,
                           color: MAROON,
                         ),
@@ -138,18 +139,20 @@ class _HomeState extends State<Home> {
                           Navigator.push(
                             context,
                             PageTransition(
-                                child: ContentScreen(
-                                  heading: heading,
-                                  content: _filteredSections[heading]!,
-                                ),
-                                childCurrent: Home(),
-                                type: PageTransitionType.rightToLeftJoined),
+                              child: ContentScreen(
+                                heading: heading,
+                                content: _filteredSections[heading]!,
+                              ),
+                              childCurrent: Home(),
+                              type: PageTransitionType.rightToLeftJoined
+                            ),
                           );
                         },
                       ),
                     );
                   },
-                )),
+              )
+            ),
             Container(
               height: 129,
               decoration: const BoxDecoration(
@@ -160,10 +163,11 @@ class _HomeState extends State<Home> {
                 ),
                 boxShadow: [
                   BoxShadow(
-                      offset: const Offset(0, 1),
-                      blurRadius: 15,
-                      spreadRadius: 2.0,
-                      color: Color.fromARGB(125, 158, 11, 0)),
+                    offset: const Offset(0, 1),
+                    blurRadius: 15,
+                    spreadRadius: 2.0,
+                    color: Color.fromARGB(125, 158, 11, 0)
+                  ),
                 ],
               ),
               child: Padding(
@@ -175,11 +179,12 @@ class _HomeState extends State<Home> {
                     children: [
                       Text(
                         greeting,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 31,
-                            fontWeight: FontWeight.w200,
-                            fontFamily: 'mont'),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 31,
+                          fontWeight: FontWeight.w200,
+                          fontFamily: 'mont'
+                        ),
                       ),
                       const Spacer(),
                     ],
@@ -219,9 +224,10 @@ class _HomeState extends State<Home> {
                         color: maroon,
                       ),
                       hintStyle: TextStyle(
-                          color: Color.fromARGB(204, 80, 80, 80),
-                          fontWeight: FontWeight.w300,
-                          letterSpacing: 1.5),
+                        color: Color.fromARGB(204, 80, 80, 80),
+                        fontWeight: FontWeight.w300,
+                        letterSpacing: 1.5
+                      ),
                       enabledBorder: InputBorder.none,
                       focusedBorder: InputBorder.none,
                     ),

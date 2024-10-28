@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 class MyTextFormField extends StatelessWidget {
   const MyTextFormField({
     super.key,
@@ -27,31 +26,28 @@ class MyTextFormField extends StatelessWidget {
           errorStyle: const TextStyle(
             fontSize: 11
           ),
-          contentPadding: const EdgeInsets.symmetric(vertical: 13, horizontal: 20),
+          contentPadding: const EdgeInsets.symmetric( horizontal: 20),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
             borderSide: const BorderSide(color: Colors.white)
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
-            // borderSide: BorderSide(color: Colors.grey.shade500)
             borderSide: const BorderSide(color: Colors.green)
           ),
           errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
-            // borderSide: BorderSide(color: Colors.grey.shade500)
             borderSide: const BorderSide(color: Colors.red)
           ),
           focusedErrorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
-            // borderSide: BorderSide(color: Colors.grey.shade500)
             borderSide: const BorderSide(color: Colors.red)
           ),
           fillColor: Colors.grey.shade200,
           filled: true,
           hintText: hintText,
           hintStyle: TextStyle(
-            fontSize: 13,
+            fontSize: 12,
             color: Colors.grey[500]
           ),
           
@@ -78,46 +74,40 @@ class MyTextFormFieldShort extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 0.0),
-      child: TextFormField(
-        controller: controller,
-        obscureText: obscureText,
-        validator: validator,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        decoration: InputDecoration(
-          errorStyle: const TextStyle(
-            fontSize: 11
-          ),
-          contentPadding: const EdgeInsets.symmetric(vertical: 13, horizontal: 20),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            borderSide: const BorderSide(color: Colors.white)
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            // borderSide: BorderSide(color: Colors.grey.shade500)
-            borderSide: const BorderSide(color: Colors.green)
-          ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            // borderSide: BorderSide(color: Colors.grey.shade500)
-            borderSide: const BorderSide(color: Colors.red)
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            // borderSide: BorderSide(color: Colors.grey.shade500)
-            borderSide: const BorderSide(color: Colors.red)
-          ),
-          fillColor: Colors.grey.shade200,
-          filled: true,
-          hintText: hintText,
-          hintStyle: TextStyle(
-            fontSize: 13,
-            color: Colors.grey[500]
-          ),
-          
+    return TextFormField(
+      controller: controller,
+      obscureText: obscureText,
+      validator: validator,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      decoration: InputDecoration(
+        errorStyle: const TextStyle(
+          fontSize: 11
         ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: const BorderSide(color: Colors.white)
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: const BorderSide(color: Colors.green)
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: const BorderSide(color: Colors.red)
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: const BorderSide(color: Colors.red)
+        ),
+        fillColor: Colors.grey.shade200,
+        filled: true,
+        hintText: hintText,
+        hintStyle: TextStyle(
+          fontSize: 12,
+          color: Colors.grey[500]
+        ),
+        
       ),
     );
   }
@@ -141,48 +131,42 @@ class MyTextFormFieldShortReadOnly extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 0.0),
-      child: TextFormField(
-        readOnly: true,
-        onTap: onTap,
-        controller: controller,
-        obscureText: obscureText,
-        validator: validator,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        decoration: InputDecoration(
-          errorStyle: const TextStyle(
-            fontSize: 11
-          ),
-          contentPadding: const EdgeInsets.symmetric(vertical: 13, horizontal: 20),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            borderSide: const BorderSide(color: Colors.white)
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            // borderSide: BorderSide(color: Colors.grey.shade500)
-            borderSide: const BorderSide(color: Colors.green)
-          ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            // borderSide: BorderSide(color: Colors.grey.shade500)
-            borderSide: const BorderSide(color: Colors.red)
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            // borderSide: BorderSide(color: Colors.grey.shade500)
-            borderSide: const BorderSide(color: Colors.red)
-          ),
-          fillColor: Colors.grey.shade200,
-          filled: true,
-          hintText: hintText,
-          hintStyle: TextStyle(
-            fontSize: 13,
-            color: Colors.grey[500]
-          ),
-          
+    return TextFormField(
+      readOnly: true,
+      onTap: onTap,
+      controller: controller,
+      obscureText: obscureText,
+      validator: validator,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      decoration: InputDecoration(
+        errorStyle: const TextStyle(
+          fontSize: 11
         ),
+        contentPadding: const EdgeInsets.symmetric( horizontal: 20),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: const BorderSide(color: Colors.white)
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: const BorderSide(color: Colors.green)
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: const BorderSide(color: Colors.red)
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: const BorderSide(color: Colors.red)
+        ),
+        fillColor: Colors.grey.shade200,
+        filled: true,
+        hintText: hintText,
+        hintStyle: TextStyle(
+          fontSize: 12,
+          color: Colors.grey[500]
+        ),
+        
       ),
     );
   }
@@ -216,7 +200,7 @@ class MyTextFormFieldPasword extends StatelessWidget {
           errorStyle: const TextStyle(
             fontSize: 11
           ),
-          contentPadding: const EdgeInsets.symmetric(vertical: 13, horizontal: 20),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 20),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
             borderSide: const BorderSide(color: Colors.white)
@@ -237,58 +221,10 @@ class MyTextFormFieldPasword extends StatelessWidget {
           filled: true,
           hintText: hintText,
           hintStyle: TextStyle(
-            fontSize: 13,
+            fontSize: 12,
             color: Colors.grey[500]
           ),
           suffixIcon: suffixIcon,
-        ),
-      ),
-    );
-  }
-}
-
-class MyTextFieldBrithday extends StatelessWidget {
-  const MyTextFieldBrithday({
-    super.key,
-    this.controller,
-    required this.hintText,
-    required this.obscureText,
-    required this.onTap
-  });
-
-  final void Function()? onTap;
-  final controller;
-  final String hintText;
-  final bool obscureText;
-      
-  @override
-  Widget build(BuildContext context) {
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-      child: TextField(
-        readOnly: true,
-        onTap: onTap,
-        controller: controller,
-        obscureText: obscureText,
-        decoration: InputDecoration(
-          contentPadding: const EdgeInsets.symmetric(vertical: 13, horizontal: 20),
-  
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            borderSide: const BorderSide(color: Colors.white)
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            borderSide: const BorderSide(color: Colors.green)
-          ),
-          fillColor: Colors.grey.shade200,
-          filled: true,
-          hintText: hintText,
-          hintStyle: TextStyle(
-            fontSize: 13,
-            color: Colors.grey[500]
-          )
         ),
       ),
     );
@@ -326,31 +262,28 @@ class MyTextFieldFormBrithday extends StatelessWidget {
           errorStyle: const TextStyle(
             fontSize: 11
           ),
-          contentPadding: const EdgeInsets.symmetric(vertical: 13, horizontal: 20),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 20),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
             borderSide: const BorderSide(color: Colors.white)
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
-            // borderSide: BorderSide(color: Colors.grey.shade500)
             borderSide: const BorderSide(color: Colors.green)
           ),
           errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
-            // borderSide: BorderSide(color: Colors.grey.shade500)
             borderSide: const BorderSide(color: Colors.red)
           ),
           focusedErrorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
-            // borderSide: BorderSide(color: Colors.grey.shade500)
             borderSide: const BorderSide(color: Colors.red)
           ),
           fillColor: Colors.grey.shade200,
           filled: true,
           hintText: hintText,
           hintStyle: TextStyle(
-            fontSize: 13,
+            fontSize: 12,
             color: Colors.grey[500]
           )
         ),

@@ -31,18 +31,18 @@ class MarkdownUtils {
     try {
       // Fetch the filepath from tbl_handbook where in_use is true
       final response = await supabase
-          .from('tbl_handbook')
-          .select('filepath')
-          .eq('in_use', true)
-          .single();
+        .from('tbl_handbook')
+        .select('filepath')
+        .eq('in_use', true)
+        .single();
 
       if (response['filepath'] != null) {
         final remoteUrl = response['filepath'] as String;
 
         // Download the file using Supabase storage
         final bytes = await supabase.storage
-            .from('handbooks') 
-            .download(remoteUrl);
+          .from('handbooks') 
+          .download(remoteUrl);
 
         // Save the downloaded file to appdocs
         final file = File(filePath);
@@ -83,7 +83,6 @@ class MarkdownUtils {
         currentContent.add(line);
       }
     }
-
     // Add the last section since the saving to sections only triggers if theres heading, so if theres no heading in the end, it cant be saved
     if (currentHeading.isNotEmpty) {
       sections[currentHeading] = currentContent.join('\n').trim();

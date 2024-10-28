@@ -209,7 +209,7 @@ class _LogInScreenState extends State<LogInScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                         
-                                const Text("Don't have an account? "),
+                                const Text("Don't have an account? ", style: TextStyle(fontSize: 11)),
                         
                                 const SizedBox(width: 20),
                         
@@ -221,7 +221,8 @@ class _LogInScreenState extends State<LogInScreen> {
                                     "Register",
                                     style: TextStyle(
                                       color: Color(0xFF9e0b0f),
-                                      fontWeight: FontWeight.bold
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12
                                     ),
                                   ),
                                 ),

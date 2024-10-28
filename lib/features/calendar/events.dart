@@ -31,21 +31,13 @@ class MyEucEventsState extends State<MyEucEvents> {
 
   @override
   void initState() {
-    // if this is the first time ever opening the app, then fetch the events and store them locally
-    // if(boxEvents.get('EventBox') == null && boxHeader.get('HeaderBox') == null) {
-    //   storeEventsLocally();
-    // }
-
-    //TODO - check if api is modified, if not dont run the store local events fucntion
-    checkIfAPIhasBeenModified();
-    futureEvents = storeEventsLocally();
-     
+    futureEvents = checkIfAPIhasBeenModified();
     super.initState();
   }
 
   // Get events(Hive)
   List<EventModelHive> eventsFromHive = []; 
-  Future storeEventsLocally() async { // ANCHOR -Run only when it's first time or storage has been modified
+  Future storeEventsLocally() async { // ANCHOR -Run only when api has been modified
 
     try {
 
@@ -54,9 +46,6 @@ class MyEucEventsState extends State<MyEucEvents> {
         .from('tbl_calendar')
         .select()
         .order('date', ascending: true);
-
-      // print('SCHOOL CALENDAR EVENTS ::::: $listOfEvents');
-
 
       // ANCHOR - GET LAST MODIFIED
       final lastModifiedQuery = await 
@@ -86,11 +75,8 @@ class MyEucEventsState extends State<MyEucEvents> {
         boxEvents.put(index, eventHive);
         index++;
       }
-
       filterEventsFromHive();
-
     } on Exception catch(e) {
-
       print("EXCEPTION ::::: $e");
       filterEventsFromHive();
 
@@ -102,7 +88,6 @@ class MyEucEventsState extends State<MyEucEvents> {
   List<EventModelHive> listForFilter = [];
   void filterEventsFromHive() {
     listForFilter = [];
-
     for(int i = 0; i < boxEvents.length; i++) {
       EventModelHive event = boxEvents.getAt(i);
       DateTime eventDateConverted = DateTime.parse(event.date.toString());
@@ -111,18 +96,15 @@ class MyEucEventsState extends State<MyEucEvents> {
         listForFilter.add(event); 
       }
     }
-
     for(var e in listForFilter){
       print("EVENT NAME : ${e.eventName}");
     }
-
     setState(() {
       listForFilter;
     });
-
   }
 
-  void checkIfAPIhasBeenModified() async {
+  Future checkIfAPIhasBeenModified() async {
      
     try {
       // ANCHOR - GET LAST MODIFIED
@@ -136,7 +118,6 @@ class MyEucEventsState extends State<MyEucEvents> {
       print("LAST MODIFIED RESPONSE :::: $lastModifiedQueryNew");
       String lastModifiedNew = lastModifiedQueryNew[0]['last_modified'].toString();
 
-
       var lastModifiedFromHive = boxHeader.get('last-modified');
       print("LAST MODIFIED NEW       ::: ${lastModifiedNew}");
       print("LAST MODIFIED FROM HIVE ::: ${boxHeader.get('last-modified')}");
@@ -144,18 +125,15 @@ class MyEucEventsState extends State<MyEucEvents> {
       if(lastModifiedFromHive != lastModifiedNew) {
         boxHeader.clear();
         boxEvents.clear();
-        storeEventsLocally();
+        await storeEventsLocally();
         Alert.of(context).showSuccess('Calendar has been updated successfully". 🥰🥰🥰');
       } else {
         Alert.of(context).showSuccess('Calendar is still up to date". 🥰🥰🥰');
       }
 
-
     } on Exception catch(e) {
-
       print("EXCEPTION ::::: $e");
       filterEventsFromHive();
-
     }
     filterEventsFromHive();
   }

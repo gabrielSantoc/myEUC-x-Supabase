@@ -24,27 +24,6 @@ class MyDrawer extends StatelessWidget {
             child: Image.asset('assets/logo.png')
           ),
 
-          Padding(
-            padding: const EdgeInsets.only(left: 10.0),
-            child: ListTile(
-              leading: const Icon(Icons.question_answer),
-              title: const Text('FAQ'),
-              onTap: () => {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> const FAQScreen()))
-              },
-            ),
-          ),
-
-          Padding(
-            padding: const EdgeInsets.only(left: 10.0),
-            child: ListTile(
-              leading: const Icon(Icons.lock),
-              title: const Text('Change Password'),
-              onTap: () => {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> const ChangePasswordScreen()))
-              },
-            ),
-          ),
 
           Padding(
             padding: const EdgeInsets.only(left: 10.0),
@@ -69,6 +48,28 @@ class MyDrawer extends StatelessWidget {
                 Navigator.pop(context);
                 onUpdateComplete!();
 
+              },
+            ),
+          ),
+          
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: ListTile(
+              leading: const Icon(Icons.lock),
+              title: const Text('Change Password'),
+              onTap: () => {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> const ChangePasswordScreen()))
+              },
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: ListTile(
+              leading: const Icon(Icons.question_answer),
+              title: const Text('FAQ'),
+              onTap: () => {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> const FAQScreen()))
               },
             ),
           ),

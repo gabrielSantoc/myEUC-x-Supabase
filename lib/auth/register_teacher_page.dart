@@ -32,7 +32,7 @@ class RegisterTeacherScreenState extends State<RegisterTeacherScreen> {
   final _confirmEmailController = TextEditingController();
   final _birthDateController = TextEditingController();
 
-  final double sizeBoxHeight = 20;
+  final double sizeBoxHeight = 15;
 
 
   @override
@@ -228,7 +228,7 @@ class RegisterTeacherScreenState extends State<RegisterTeacherScreen> {
                         "Create Your",
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 34,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold
                         ),
                       ),
@@ -237,7 +237,7 @@ class RegisterTeacherScreenState extends State<RegisterTeacherScreen> {
                         "Account",
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 34,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold
                   
                         ),
@@ -391,7 +391,7 @@ class RegisterTeacherScreenState extends State<RegisterTeacherScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                   
-                          const Text("Already have an account? "),
+                          const Text("Already have an account? ", style: TextStyle(fontSize: 11),),
                   
                           const SizedBox(width: 20),
                   
@@ -406,7 +406,8 @@ class RegisterTeacherScreenState extends State<RegisterTeacherScreen> {
                               "Log in",
                               style: TextStyle(
                                 color: MAROON,
-                                fontWeight: FontWeight.bold
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12
                               ),
                             ),
                           ),
