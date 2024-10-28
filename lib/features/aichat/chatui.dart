@@ -73,7 +73,7 @@ class _ChatUIState extends State<ChatUI> {
         title: 'Connection Error',
         message:
             'Failed to connect to the server. Please check your network connection.',
-        onRetry: () => print('Retrying...'), // Optional
+        onRetry: () => _resetConversation(), 
       );
       return null;
     }
@@ -98,23 +98,25 @@ class _ChatUIState extends State<ChatUI> {
 
   void _sendMessage() async {
     final text = _messageController.text.trim();
-    if (text.isNotEmpty) {
-      setState(() {
-        _messages.add(ChatMessage(text: text, isUserMessage: true));
-        _messages
-            .add(ChatMessage(text: '', isUserMessage: false, isLoading: true));
-      });
-      _messageController.clear();
-      scrollDown(_scrollController, const Duration(milliseconds: 500));
+    if (text.isEmpty) return;
 
-      final response = await _sendQuery(text);
-      setState(() {
-        _messages.removeLast();
-        _messages.add(ChatMessage(
-            text: response ?? 'Error occurred', isUserMessage: false));
-      });
-      scrollDown(_scrollController, const Duration(milliseconds: 500));
-    }
+    final messageIndex = _messages.length;
+    setState(() {
+      _messages.add(ChatMessage(text: text, isUserMessage: true));
+      _messages.add(ChatMessage(text: '', isUserMessage: false, isLoading: true));
+    });
+    _messageController.clear();
+    scrollDown(_scrollController, const Duration(milliseconds: 500));
+
+    final response = await _sendQuery(text);
+    setState(() {
+      //update the last message with the response(loading)
+      _messages[messageIndex + 1] = ChatMessage(
+        text: response ?? 'Error occurred', 
+        isUserMessage: false
+      );
+    });
+    scrollDown(_scrollController, const Duration(milliseconds: 500));
   }
 
   @override
