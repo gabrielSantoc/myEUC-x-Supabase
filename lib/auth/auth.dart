@@ -38,9 +38,9 @@ class _AuthScreenState extends State<AuthScreen> {
       case AuthChangeEvent.mfaChallengeVerified:
       // handle mfa challenge verified
     }
+
   });
   
-
   @override
   void dispose() {
     // Cancel the subscription when the widget is disposed to prevent memory leaks
@@ -74,7 +74,6 @@ class _AuthScreenState extends State<AuthScreen> {
 
               return const LogInScreen();
             }
-
 
           } else if(snapshot.hasError) {
 

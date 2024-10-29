@@ -6,6 +6,7 @@ import 'package:myeuc_x_supabase/components/manual.dart';
 import 'package:myeuc_x_supabase/utils/markdown_utils.dart';
 import 'package:myeuc_x_supabase/main.dart';
 import 'package:myeuc_x_supabase/shared/alert.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 
 
@@ -81,7 +82,8 @@ class MyDrawer extends StatelessWidget {
               title: const Text('Sign Out'),
               onTap: () async{
                 await supabase.auth.signOut();
-                Navigator.pushNamedAndRemoveUntil(context, '/authScreen', (Route<dynamic> route) => false);
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const AuthScreen()));
+                print("Sign out successfully🥰");
               },
             ),
           ),
