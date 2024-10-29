@@ -61,3 +61,5 @@ jobs:  # Telling what jobs we need to happen
         artifacts: "build/app/outputs/flutter-apk/app-release.apk,build/app/outputs/bundle/release/app-release.aab,build/ios_build.tar.gz"
         tag: v${{ github.run_number }}
         token: ${{ secrets.TOKEN }}
+
+# Test github actions
