@@ -3,6 +3,7 @@ import 'package:myeuc_x_supabase/auth/auth.dart';
 import 'package:myeuc_x_supabase/auth/update_password.dart';
 import 'package:myeuc_x_supabase/components/FAQ.dart';
 import 'package:myeuc_x_supabase/components/manual.dart';
+import 'package:myeuc_x_supabase/shared/constants.dart';
 import 'package:myeuc_x_supabase/utils/markdown_utils.dart';
 import 'package:myeuc_x_supabase/main.dart';
 import 'package:myeuc_x_supabase/shared/alert.dart';
@@ -81,6 +82,9 @@ class MyDrawer extends StatelessWidget {
               leading: const Icon(Icons.logout),
               title: const Text('Sign Out'),
               onTap: () async{
+                LoadingDialog.showLoading(context);
+                await Future.delayed(const Duration(seconds: 2));
+                LoadingDialog.hideLoading(context);
                 await supabase.auth.signOut();
                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const AuthScreen()));
                 print("Sign out successfully🥰");

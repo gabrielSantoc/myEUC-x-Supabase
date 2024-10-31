@@ -95,7 +95,7 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
 
   
   // ANCHOR - FUNCTION TO SELECT COURSE
-  final List<String> _levels = ['1', '2', '3', '4',];
+  final List<String> _levels = ['', '1', '2', '3', '4',];
   Future<void> selectYearLevel() async {
     // Show the Cupertino modal popup
     await showCupertinoModalPopup<String>(
@@ -125,7 +125,7 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
   }
 
   // ANCHOR - FUNCTION TO SELECT COURSE
-  final List<String> _course = ['BSCS', 'BSCE', 'BSN', 'BSBA', 'BSA'];
+  final List<String> _course = ['', 'BSA', 'BSBA', 'BSCoE', 'BSCS', 'BEEd & BSeEd', 'BSHM', 'BSN', 'ABPsych', 'BSTM'];
   Future<void> selectSection() async {
     // Show the Cupertino modal popup
     await showCupertinoModalPopup<String>(
@@ -323,7 +323,7 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
                         onPressed: (int index) {
                           setState(() {
                             if(index == 1) {
-                              Navigator.pushNamed(context, '/registerTeacherScreen');
+                              Navigator.pushReplacementNamed(context, '/registerTeacherScreen');
                             }
                           });
                         },

@@ -91,7 +91,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 17,
-                    fontWeight: FontWeight.w300
+                    fontWeight: FontWeight.bold
                   ),
                 ),
             
