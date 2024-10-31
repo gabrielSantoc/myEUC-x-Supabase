@@ -11,8 +11,6 @@ import 'package:myeuc_x_supabase/shared/app_dialog.dart';
 import 'package:myeuc_x_supabase/helper/helper_functions.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-
-
 class ChatUI extends StatefulWidget {
   const ChatUI({super.key});
   @override
@@ -32,10 +30,11 @@ class _ChatUIState extends State<ChatUI> {
   void initState() {
     super.initState();
     _initializationFuture = _initializeChat();
-     _currentUserId = Supabase.instance.client.auth.currentUser!.id;
+    _currentUserId = Supabase.instance.client.auth.currentUser!.id;
     _scrollController.addListener(() {
       setState(() {
-        _isAtBottom = _scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 50;
+        _isAtBottom = _scrollController.position.pixels >=
+            _scrollController.position.maxScrollExtent - 50;
         _imageSize = (400 - (_scrollController.offset / 1)).clamp(50.0, 400.0);
       });
     });
@@ -51,18 +50,28 @@ class _ChatUIState extends State<ChatUI> {
 
   Future<String?> _sendQuery(String query) async {
     try {
+      List<Map<String, dynamic>> history = [];
+      if (_messages.isNotEmpty) {
+        int start = _messages.length >= 4 ? _messages.length - 4 : 0;
+        
+        history = _messages
+            .sublist(start)
+            .map((msg) => {
+                  'role': msg.isUserMessage ? 'user' : 'assistant',
+                  'content': msg.text
+                })
+            .toList();
+      }
       final response = await http.post(
-        // Uri.parse('http://192.168.126.64:5000/query'),
+        // Uri.parse('http://192.168.141.64:5000/query'),
         Uri.parse('https://myeuc-ai-server.onrender.com/query'),
         headers: {'Content-Type': 'application/json'},
-        body: json.encode({'query': query}),
+        body: json.encode({'query': query, 'history': history}),
       );
-
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
         incrementChatsPerDay(_currentUserId);
         return jsonResponse['groqResponse']['text'];
-        
       } else {
         throw Exception('Failed to load response');
       }
@@ -71,9 +80,8 @@ class _ChatUIState extends State<ChatUI> {
       AppDialog.showErrorDialog(
         context: context,
         title: 'Connection Error',
-        message:
-            'Failed to connect to the server. Please check your network connection.',
-        onRetry: () => _resetConversation(), 
+        message:'Failed to connect to the server. Please check your network connection.',
+        onRetry: () => _resetConversation(),
       );
       return null;
     }
@@ -86,7 +94,6 @@ class _ChatUIState extends State<ChatUI> {
       _imageSize = 400;
       _initializationFuture = _initializeChat();
     });
-
   }
 
   @override
@@ -103,7 +110,8 @@ class _ChatUIState extends State<ChatUI> {
     final messageIndex = _messages.length;
     setState(() {
       _messages.add(ChatMessage(text: text, isUserMessage: true));
-      _messages.add(ChatMessage(text: '', isUserMessage: false, isLoading: true));
+      _messages
+          .add(ChatMessage(text: '', isUserMessage: false, isLoading: true));
     });
     _messageController.clear();
     scrollDown(_scrollController, const Duration(milliseconds: 500));
@@ -111,10 +119,8 @@ class _ChatUIState extends State<ChatUI> {
     final response = await _sendQuery(text);
     setState(() {
       //update the last message with the response(loading)
-      _messages[messageIndex + 1] = ChatMessage(
-        text: response ?? 'Error occurred', 
-        isUserMessage: false
-      );
+      _messages[messageIndex + 1] =
+          ChatMessage(text: response ?? 'Error occurred', isUserMessage: false);
     });
     scrollDown(_scrollController, const Duration(milliseconds: 500));
   }
@@ -122,7 +128,6 @@ class _ChatUIState extends State<ChatUI> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       appBar: AppBar(
         title: const Text('Manuel AI',
             style: TextStyle(fontWeight: FontWeight.bold)),
@@ -175,8 +180,11 @@ class _ChatUIState extends State<ChatUI> {
                         _buildChatBubble(context, index),
                   ),
                 ),
-                buildMessageInput(_messageController, _sendMessage,
-                    () => scrollDown(_scrollController, const Duration(milliseconds: 500))),
+                buildMessageInput(
+                    _messageController,
+                    _sendMessage,
+                    () => scrollDown(
+                        _scrollController, const Duration(milliseconds: 500))),
               ],
             );
           }
