@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myeuc_x_supabase/components/nav_bar.dart';
 import 'package:myeuc_x_supabase/main.dart';
 import 'package:myeuc_x_supabase/shared/alert.dart';
 import 'package:myeuc_x_supabase/shared/app_dialog.dart';
@@ -46,7 +47,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           title: 'Success',
           message: 'Password updated sucessfully.',
           onConfirm: () {
-            Navigator.pushNamedAndRemoveUntil(context, '/homeScreen', (Route<dynamic> route) => false);
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const NavBar()));
           }
         );
 
