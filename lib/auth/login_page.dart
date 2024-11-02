@@ -152,21 +152,19 @@ class _LogInScreenState extends State<LogInScreen> {
                             const SizedBox(height: 15),
                       
                             MyTextFormFieldPasword(
-                                controller: userPasswordController,
-                                hintText: 'Password',
-                                obscureText: obscureTextFlag,
-                                suffixIcon: GestureDetector(
-                
-                                  onTap: () {
-                                    setState(() {
-                                      obscureTextFlag = !obscureTextFlag;
-                                      print("FLAGGGGGGG ${obscureTextFlag}");
-                                    });
-                                  },
-                                  child: Icon( obscureTextFlag ?Icons.visibility_off :Icons.visibility )
-                                ),
-                                
-                                validator: (value)=> Validator.of(context).validateTextField(value, "Password"),
+                              controller: userPasswordController,
+                              hintText: 'Password',
+                              obscureText: obscureTextFlag,
+                              suffixIcon: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    obscureTextFlag = !obscureTextFlag;
+                                    print("FLAGGGGGGG ${obscureTextFlag}");
+                                  });
+                                },
+                                child: Icon( obscureTextFlag ? Icons.visibility_off :Icons.visibility )
+                              ),
+                              validator: (value)=> Validator.of(context).validateTextField(value, "Password"),
                             ),
                         
                             const SizedBox(height: 20),

@@ -25,6 +25,9 @@ class _HomeState extends State<Home> {
   Map<String, String> _sections = {};
   Map<String, String> _filteredSections = {};
 
+  final _searchController = TextEditingController();
+  bool _showClearButton = false;
+
   @override
   void initState() {
     super.initState();
@@ -51,8 +54,6 @@ class _HomeState extends State<Home> {
       _filteredSections = _sections;
     });
   }
-
-  
 
   void runFilter(String enteredKeyword) {
     Map<String, String> results = {};
@@ -82,8 +83,6 @@ class _HomeState extends State<Home> {
         elevation: 0,
         scrolledUnderElevation: 0,
         foregroundColor: Colors.white,
-
-        
       ),
       drawer:  MyDrawer(onUpdateComplete: () => loadMarkdownData()),
       body: Container(
@@ -108,7 +107,7 @@ class _HomeState extends State<Home> {
                         color: Colors.white,
                         boxShadow: [
                           BoxShadow(
-                            offset: Offset(4, 4),
+                            offset: const Offset(4, 4),
                             blurRadius: 15,
                             color: Colors.grey.shade500,
                             spreadRadius: 1
@@ -214,22 +213,41 @@ class _HomeState extends State<Home> {
                   ],
                 ),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: TextField(
-                    onChanged: (value) => runFilter(value),
-                    decoration: const InputDecoration(
+                    controller: _searchController,
+                    onChanged: (value) {
+                      setState(() {
+                        if(value.isNotEmpty) {
+                          _showClearButton = true;
+                        }
+                      });
+                      runFilter(value);
+                    },
+                    decoration: InputDecoration(
                       hintText: 'Search for something...',
-                      icon: Icon(
+                      icon:  const Icon(
                         Icons.search,
                         color: maroon,
                       ),
-                      hintStyle: TextStyle(
+                      suffixIcon: _showClearButton ? IconButton(
+                        icon: const Icon(Icons.clear, color: Colors.grey, size: 14,),
+                        onPressed:() {
+                          _searchController.clear(); 
+                          setState(() {
+                            _showClearButton = false;
+                          });
+                          runFilter('');
+                        },
+                      ): null,
+                      hintStyle: const TextStyle(
                         color: Color.fromARGB(204, 80, 80, 80),
                         fontWeight: FontWeight.w300,
                         letterSpacing: 1.5
                       ),
                       enabledBorder: InputBorder.none,
                       focusedBorder: InputBorder.none,
+                      contentPadding: const EdgeInsets.symmetric(vertical: 14),
                     ),
                   ),
                 ),

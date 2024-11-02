@@ -3,6 +3,7 @@ import 'package:myeuc_x_supabase/auth/login_page.dart';
 import 'package:myeuc_x_supabase/components/nav_bar.dart';
 import 'package:myeuc_x_supabase/helper/helper_functions.dart';
 import 'package:myeuc_x_supabase/main.dart';
+import 'package:myeuc_x_supabase/shared/alert.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -76,8 +77,10 @@ class _AuthScreenState extends State<AuthScreen> {
             }
 
           } else if(snapshot.hasError) {
-
-            return Center(child: Text('Error :: ${snapshot.error}'));
+            
+            Alert.of(context).showSuccess('Please check your internet connection. 😞😞😞');
+            print('Error :: ${snapshot.error}');
+            return const NavBar();
             
           } else {
             return const Center(child: CircularProgressIndicator());

@@ -200,7 +200,7 @@ class RegisterTeacherScreenState extends State<RegisterTeacherScreen> {
             children: [
               Container(
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.22,
+                height: MediaQuery.of(context).size.height * 0.19,
                 decoration: const BoxDecoration(
                   color: Color(0xFF9e0b0f),
 
