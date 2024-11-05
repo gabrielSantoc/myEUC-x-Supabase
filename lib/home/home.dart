@@ -3,7 +3,6 @@ import 'package:myeuc_x_supabase/components/my_drawer.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:myeuc_x_supabase/features/handbook/contentpage.dart';
 import 'package:myeuc_x_supabase/utils/markdown_utils.dart';
-
 import 'package:myeuc_x_supabase/shared/constants.dart';
 import 'package:page_transition/page_transition.dart';
 

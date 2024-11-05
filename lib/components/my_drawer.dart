@@ -87,7 +87,7 @@ class MyDrawer extends StatelessWidget {
                 LoadingDialog.hideLoading(context);
                 await supabase.auth.signOut();
                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const AuthScreen()));
-                print("Sign out successfully🥰");
+                print("Signed out successfully🥰");
               },
             ),
           ),

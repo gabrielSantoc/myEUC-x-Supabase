@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:myeuc_x_supabase/auth/register_teacher_page.dart';
 import 'package:myeuc_x_supabase/main.dart';
 import 'package:myeuc_x_supabase/shared/alert.dart';
 import 'package:myeuc_x_supabase/shared/buttons.dart';
@@ -323,7 +324,8 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
                         onPressed: (int index) {
                           setState(() {
                             if(index == 1) {
-                              Navigator.pushReplacementNamed(context, '/registerTeacherScreen');
+                              // Navigator.pushReplacementNamed(context, '/registerTeacherScreen');
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const RegisterTeacherScreen()));
                             }
                           });
                         },

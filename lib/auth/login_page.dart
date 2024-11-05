@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:myeuc_x_supabase/auth/forgot_password.dart';
+import 'package:myeuc_x_supabase/auth/register_page.dart';
 import 'package:myeuc_x_supabase/components/nav_bar.dart';
 import 'package:myeuc_x_supabase/main.dart';
 import 'package:myeuc_x_supabase/shared/alert.dart';
@@ -175,7 +177,7 @@ class _LogInScreenState extends State<LogInScreen> {
                         
                             GestureDetector(
                               onTap: () {
-                                Navigator.pushNamed(context, '/forgotPasswordScreen');
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=> const ForgotPasswordPage()));
                               },
                               child: const Text(
                                 'Forgot Password ?',
@@ -213,7 +215,8 @@ class _LogInScreenState extends State<LogInScreen> {
                         
                                 GestureDetector(
                                   onTap: () {
-                                    Navigator.pushNamed(context, '/registerStudentScreen');
+                                    // Navigator.pushNamed(context, '/registerStudentScreen');
+                                    Navigator.push(context, MaterialPageRoute(builder: (context)=> const RegisterStudentScreen()));
                                   },
                                   child: const Text(
                                     "Register",

@@ -273,7 +273,8 @@ class RegisterTeacherScreenState extends State<RegisterTeacherScreen> {
                         onPressed: (int index) {
                           setState(() {
                             if(index == 0) {
-                              Navigator.pushReplacementNamed(context, '/registerStudentScreen');
+                              // Navigator.pushReplacementNamed(context, '/registerStudentScreen');
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const RegisterStudentScreen()));
                             }
                           });
                         },
