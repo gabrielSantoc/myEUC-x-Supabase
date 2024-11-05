@@ -132,7 +132,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   ),
                   
                   validator: (value) {
-                    Validator.of(context).validateConfirmation(value, _passwordController.text.trim(), 'Confirm Password');
+                    return Validator.of(context).validateConfirmation(value, _passwordController.text.trim(), 'Confirm Password');
                   }
                 ),
             
