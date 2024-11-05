@@ -66,19 +66,14 @@ class _AuthScreenState extends State<AuthScreen> {
             print("SESSION ::: $session");
 
             if(session != null) {
-
               updateAnalytics(session.user.id);
-              
               return const NavBar();
-
             } else {
-
               return const LogInScreen();
             }
 
           } else if(snapshot.hasError) {
             
-            Alert.of(context).showSuccess('Please check your internet connection. 😞😞😞');
             print('Error :: ${snapshot.error}');
             return const NavBar();
             
