@@ -92,12 +92,15 @@ class MyEucEventsState extends State<MyEucEvents> {
       EventModelHive event = boxEvents.getAt(i);
       DateTime eventDateConverted = DateTime.parse(event.date.toString());
       
-      if(eventDateConverted.month.toString() == dropdownValue) {
+      if(eventDateConverted.year.toString() == todayDate.year.toString() && eventDateConverted.month.toString() == dropdownValue ) {
         listForFilter.add(event); 
       }
+      
     }
     for(var e in listForFilter){
       print("EVENT NAME : ${e.eventName}");
+      print("EVENT NAME : ${e.date}");
+      print("YEAR ::: ${todayDate.year}");
     }
     setState(() {
       listForFilter;
