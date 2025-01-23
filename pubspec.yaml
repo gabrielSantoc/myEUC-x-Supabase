@@ -47,6 +47,9 @@ dependencies:
   intl: ^0.19.0
   path_provider: ^2.1.4
   dio: ^5.7.0
+  font_awesome_flutter: ^10.8.0
+  url_launcher: ^6.3.1
+  mailto: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -84,6 +87,7 @@ flutter:
     - assets/
     - assets/icon/
     - assets/markdown/
+    - assets/about_dev/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

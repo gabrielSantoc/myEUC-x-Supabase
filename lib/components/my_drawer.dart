@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:myeuc_x_supabase/auth/auth.dart';
 import 'package:myeuc_x_supabase/auth/update_password.dart';
-import 'package:myeuc_x_supabase/components/FAQ.dart';
+import 'package:myeuc_x_supabase/components/FAQ_screen.dart';
+import 'package:myeuc_x_supabase/components/about_dev_screen.dart';
 import 'package:myeuc_x_supabase/components/manual.dart';
 import 'package:myeuc_x_supabase/shared/constants.dart';
 import 'package:myeuc_x_supabase/utils/markdown_utils.dart';
@@ -72,6 +73,17 @@ class MyDrawer extends StatelessWidget {
               title: const Text('FAQ'),
               onTap: () => {
                 Navigator.push(context, MaterialPageRoute(builder: (context)=> const FAQScreen()))
+              },
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: ListTile(
+              leading: const Icon(Icons.boy_outlined),
+              title: const Text('About Developers'),
+              onTap: () => {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> const AboutDevelopersScreen()))
               },
             ),
           ),

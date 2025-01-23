@@ -96,3 +96,35 @@ class PasswordGuide extends StatelessWidget {
     );
   }
 }
+
+
+class PrivacyPolicy extends StatelessWidget {
+  const PrivacyPolicy({super.key});
+
+
+  @override
+  Widget build(BuildContext context) {
+    return const Expanded(
+      child: Text.rich(
+        TextSpan(
+          text: 'By creating an account, you are agreeing to our ',
+          children: <TextSpan>[
+            TextSpan(
+              text: 'Terms & Condition',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+          ],
+        ),
+        textAlign: TextAlign.left,
+        style: TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w400,
+          color: Colors.black,
+        ),
+      ),
+    );
+  }
+}

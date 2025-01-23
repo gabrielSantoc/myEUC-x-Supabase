@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myeuc_x_supabase/auth/register_teacher_page.dart';
+import 'package:myeuc_x_supabase/components/policy_dialog.dart';
 import 'package:myeuc_x_supabase/main.dart';
 import 'package:myeuc_x_supabase/shared/alert.dart';
 import 'package:myeuc_x_supabase/shared/buttons.dart';
@@ -32,6 +33,7 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
   final _birthDateController = TextEditingController();
 
   final double sizeBoxHeight = 15;
+  bool _isCheck = false;
 
 
   @override
@@ -158,9 +160,17 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
 
  // FUNCTION TO CREATE A NEW ACCOUNT
   void  registerAccount () async{
+
+
     await validateStudent();
 
     if(registerFormKey.currentState!.validate()) {
+      
+      if(!_isCheck) {
+        Alert.of(context).showError('Sorry, but you cannot create an account if you do not agree to our Terms & Conditions. 😞😞😞');
+        return;
+      }
+
 
       if( isStudentBonafide ) {
 
@@ -243,6 +253,7 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
       body: SingleChildScrollView(
         
         child: Form(
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           key: registerFormKey,
           child: Column(
             
@@ -456,8 +467,51 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
                         validator: (value) =>  Validator.of(context)
                         .validateConfirmation(value, _emailController.text, 'Confirm Email')
                       ),
+
+                      const SizedBox(height: 10),
+
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                        child: Row(
+                          children: [
+
+                            Checkbox(
+                              activeColor: MAROON,
+                              value: _isCheck,
+                              onChanged: (bool? value) {
+                                if(_isCheck) {
+                                  setState(() {
+                                    _isCheck = false;
+                                  });
+                                  return;
+                                }
+                                showDialog(
+                                  barrierDismissible: false,
+                                  context: context,
+                                  builder: (context) {
+                                    return PolicyDialog(
+                                      mdFileName: 'terms_and_conditions.md',
+                                      buttonName: 'I Understood',
+                                      onTap: () {
+                                        setState(() {
+                                          _isCheck = true;
+                                        });
+                                        Navigator.pop(context);
+                                      },
+                                    );
+                                    
+                                  }
+                                );
+                              }
+                            ),
+
+                            const PrivacyPolicy()
+
+                          ],
+                        ),
+                      ),
                   
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 10),
                 
                       Form(
                         child: Column(
@@ -496,12 +550,11 @@ class _RegisterStudentScreenState extends State<RegisterStudentScreen> {
                         ],
                         
                       ),
-                       const SizedBox(height: 10),
+                      const SizedBox(height: 10),
                     ],
                   ),
                 ),
               ),
-              // ANCHOR PAGE VIEW
           
               const SizedBox(height: 40),
             ],

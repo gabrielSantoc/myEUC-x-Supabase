@@ -36,7 +36,6 @@ class _ResetPassowrdScreenState extends State<ResetPassowrdScreen> {
     super.dispose();
   }
 
-
   void showAlertDialog(BuildContext context) {
     showCupertinoDialog<void>(
       context: context,
