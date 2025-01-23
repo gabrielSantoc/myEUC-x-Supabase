@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:myeuc_x_supabase/auth/auth.dart';
 import 'package:myeuc_x_supabase/auth/update_password.dart';
 import 'package:myeuc_x_supabase/components/FAQ_screen.dart';
@@ -31,7 +32,8 @@ class MyDrawer extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 10.0),
             child: ListTile(
-              leading: const Icon(Icons.book),
+              // leading: const Icon(Icons.book),
+              leading: const Icon(FontAwesomeIcons.book),
               title: const Text('User Manual'),
               onTap: () => {
                 Navigator.push(context, MaterialPageRoute(builder: (context)=> Manual()))
@@ -42,7 +44,8 @@ class MyDrawer extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 10.0),
             child: ListTile(
-              leading: const Icon(Icons.download),
+              // leading: const Icon(Icons.download),
+              leading: const Icon(FontAwesomeIcons.download),
               title: const Text('Check for Updates'),
               onTap: () async{
                 
@@ -58,7 +61,8 @@ class MyDrawer extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 10.0),
             child: ListTile(
-              leading: const Icon(Icons.lock),
+              // leading: const Icon(Icons.lock),
+              leading: const Icon(FontAwesomeIcons.key),
               title: const Text('Change Password'),
               onTap: () => {
                 Navigator.push(context, MaterialPageRoute(builder: (context)=> const ChangePasswordScreen()))
@@ -69,18 +73,8 @@ class MyDrawer extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 10.0),
             child: ListTile(
-              leading: const Icon(Icons.question_answer),
-              title: const Text('FAQ'),
-              onTap: () => {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> const FAQScreen()))
-              },
-            ),
-          ),
-
-          Padding(
-            padding: const EdgeInsets.only(left: 10.0),
-            child: ListTile(
-              leading: const Icon(Icons.boy_outlined),
+              // leading: const Icon(Icons.boy_outlined),
+              leading: const Icon(FontAwesomeIcons.screwdriverWrench),
               title: const Text('About Developers'),
               onTap: () => {
                 Navigator.push(context, MaterialPageRoute(builder: (context)=> const AboutDevelopersScreen()))
@@ -91,7 +85,22 @@ class MyDrawer extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 10.0),
             child: ListTile(
-              leading: const Icon(Icons.logout),
+              leading:  const Icon(FontAwesomeIcons.solidLightbulb),
+              // leading:  Icon(Icons.question_answer),
+              title: const Text('FAQ'),
+              onTap: () => {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> const FAQScreen()))
+              },
+            ),
+          ),
+
+          
+
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: ListTile(
+              // leading: const Icon(Icons.logout),
+              leading: const Icon(FontAwesomeIcons.arrowRightFromBracket),
               title: const Text('Sign Out'),
               onTap: () async{
                 LoadingDialog.showLoading(context);
